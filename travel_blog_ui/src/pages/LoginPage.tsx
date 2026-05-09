@@ -69,6 +69,9 @@ const LoginPage = () => {
             </Button>
         </div>
     );
+
+//     Validation and error handling
+
 };
 
 export default LoginPage;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link,} from 'react-router-dom';
 import { Card, CardContent, CardMedia, CardActionArea, Typography, Chip, Avatar } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 

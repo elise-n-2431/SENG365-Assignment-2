@@ -125,6 +125,8 @@ const BlogsPage = () => {
             </div>
         </div>
     );
+
+//     Filtering
 };
 
 export default BlogsPage;

@@ -53,7 +53,7 @@ const NavBar = () => {
                 ) : (
                     <>
                         <Link to="/login">Log in</Link>
-                        <Link to="/register">Register</Link>
+                        {/*<Link to="/register">Register</Link>*/}
                     </>
                 )}
             </div>

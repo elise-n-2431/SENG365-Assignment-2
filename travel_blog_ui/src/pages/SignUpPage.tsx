@@ -31,10 +31,13 @@ const SignUp = () => {
 
 
     const handleSignUp = () => {
-        axios.post(`${API_BASE}/users/register`, { email, password, firstName, lastName, imgURL })
+        axios.post(`${API_BASE}/users/register`, { email, password, firstName, lastName })
             .then(() => {
                 return axios.post(`${API_BASE}/users/login`, { email, password });
             })
+
+            // Handle image sending seperately after
+
             .then((res) => {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('userId', res.data.userId);
@@ -51,7 +54,7 @@ const SignUp = () => {
 
     return (
         <div style={{ padding: 20, maxWidth: 400, alignSelf: 'center'}}>
-            <h1>Log in</h1>
+            <h1>Register</h1>
 
             {errorFlag && <div style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</div>}
 
@@ -100,7 +103,7 @@ const SignUp = () => {
             {/* Add image url handling */}
 
             <Button variant="contained" style={{ margin: 8}} onClick={handleSignUp}>
-                SignUp
+                Sign Up
             </Button>
         </div>
     );

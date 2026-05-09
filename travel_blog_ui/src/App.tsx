@@ -13,7 +13,7 @@ import LoginPage from './pages/LoginPage';
 import NewBlogPage from './pages/NewBlogPage';
 import UserProfilePage from "./pages/UserProfilePage.tsx";
 import EditBlogPage from "./pages/EditBlogPage.tsx";
-import MyBlogsPage from "./pages/MyBlogsPage.tsx";
+// import MyBlogsPage from "./components/BlogSeriesSection.tsx";
 import EditProfilePage from "./pages/EditProfilePage.tsx";
 import NavBar from "./components/NavBar.tsx";
 import SignUpPage from "./pages/SignUpPage";
@@ -48,10 +48,10 @@ export default function App() {
               <Route path="/blogs/:id/edit" element={
                 <ProtectedRoute><EditBlogPage /></ProtectedRoute>
               } />
-              <Route path="/my-blogs" element={
-                <ProtectedRoute><MyBlogsPage /></ProtectedRoute>
-              } />
-              <Route path="/profile/edit" element={
+              {/*<Route path="/my-blogs" element={*/}
+              {/*  <ProtectedRoute><MyBlogsPage /></ProtectedRoute>*/}
+              {/*} />*/}
+              <Route path="/users/:id/edit" element={
                 <ProtectedRoute><EditProfilePage /></ProtectedRoute>
               } />
             </Routes>
