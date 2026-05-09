@@ -46,6 +46,9 @@ const EditProfilePage = () => {
 
     return (
         <div style={{ padding: 20, maxWidth: 400 }}>
+
+            {/* Give a consistent formatting template, shared with sign up page */}
+
             <h1>Edit Profile</h1>
 
             {errorFlag && <div style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</div>}

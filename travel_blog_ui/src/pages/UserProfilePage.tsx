@@ -18,7 +18,6 @@ interface User{
 const API_BASE = 'http://localhost:4941/api/v1';
 
 
-
 const UserProfile = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -47,6 +46,9 @@ const UserProfile = () => {
     const userName = `${user.firstName} ${user.lastName}`;
 
 
+    const loggedInUserId = localStorage.getItem("userId");
+    const isAuthorised = Number(loggedInUserId) === Number(id);
+
     return (<div>
         <h1>{userName}</h1>
 
@@ -62,13 +64,18 @@ const UserProfile = () => {
         </div>
 
         {/* only if auth user */}
-        <Link to={`/users/${id}/edit`}>
-            <Button variant="contained" style={{ margin: 8}}>
-                Edit Profile
-            </Button>
-        </Link>
+        {isAuthorised && (
+            <Link to={`/users/${id}/edit`}>
+                <Button variant="contained" style={{ margin: 8 }}>
+                    Edit Profile
+                </Button>
+            </Link>
+        )}
+        {isAuthorised && (
+            <p>{user.email}</p>
+            )}
 
-        <BlogSeries id={userId} />
+            <BlogSeries id={userId} />
 
     </div>)
 }
