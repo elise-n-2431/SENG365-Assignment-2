@@ -4,16 +4,6 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import { Button } from "@mui/material";
 
 
-// interface User{
-//     id: number,
-//     firstName: string,
-//     lastName: string,
-//     email: string,
-//     password: string,
-//     imageFilename: string,
-//     authToken: string
-// }
-
 const API_BASE = 'http://localhost:4941/api/v1';
 
 const SignUp = () => {

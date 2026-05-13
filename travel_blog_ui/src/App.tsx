@@ -35,11 +35,8 @@ export default function App() {
             <Routes>
               {/* Public */}
               <Route path="/" element={<BlogsPage />} />
-              <Route path="/blogs/:id" element={<BlogDetailPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<SignUpPage />} />
-              <Route path="/users/:id" element={<UserProfilePage />} />
-              <Route path="*" element={<NotFound/>}/>
 
               {/* Auth-required */}
               <Route path="/blogs/create" element={
@@ -54,6 +51,12 @@ export default function App() {
               <Route path="/users/:id/edit" element={
                 <ProtectedRoute><EditProfilePage /></ProtectedRoute>
               } />
+
+              <Route path="/blogs/:id" element={<BlogDetailPage />} />
+              <Route path="/users/:id" element={<UserProfilePage />} />
+              <Route path="*" element={<NotFound/>}/>
+
+
             </Routes>
           </Router>
       </ThemeProvider>

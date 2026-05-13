@@ -26,7 +26,7 @@ const BlogSeries = ({ id }: { id: number }) => {
     const [cities, setCities] = React.useState<City[]>([]);
     const [errorFlag, setErrorFlag] = React.useState(false);
 
-    React.useEffect(() => { //this isn't filtering correctly
+    React.useEffect(() => {
         axios.get(`${API_BASE}/blogs`, { params: { creatorId: id } })
             .then((res) => setBlogs(res.data.blogs))
             .catch(() => setErrorFlag(true));

@@ -18,27 +18,27 @@ interface User{
 const API_BASE = 'http://localhost:4941/api/v1';
 
 
-const UserProfile = () => {
+const UserProfilePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-
-    if (!id) {
-        navigate('/');
-        return null;
-    }
-
-    const userId = Number(id);
-
     const [user, setUser] = React.useState<User | null>(null);
     // const [imgError, setImgError] = React.useState(false);
     const [avatarError, setAvatarError] = React.useState(false);
     const [errorFlag, setErrorFlag] = React.useState(false);
+
+    const userId = Number(id);
 
     React.useEffect(() => {
         axios.get(`${API_BASE}/users/${id}`)
             .then((res) => setUser(res.data))
             .catch(() => setErrorFlag(true));
     }, [id]);
+
+    if (!id) {
+        navigate('/');
+        return null;
+    }
+
     if (errorFlag) return <div>Something went wrong</div>;
     if (!user) return <div>Loading...</div>;
 
@@ -65,19 +65,23 @@ const UserProfile = () => {
 
         {/* only if auth user */}
         {isAuthorised && (
-            <Link to={`/users/${id}/edit`}>
-                <Button variant="contained" style={{ margin: 8 }}>
+            <><Link to={`/users/${id}/edit`}>
+                <Button variant="contained" style={{margin: 8}}>
                     Edit Profile
                 </Button>
+            </Link><Link to="/blogs/create">
+                <Button variant="contained">New Blog</Button>
             </Link>
+            </>
         )}
+
         {isAuthorised && (
             <p>{user.email}</p>
-            )}
+        )}
 
-            <BlogSeries id={userId} />
+        <BlogSeries id={userId} />
 
     </div>)
 }
 
-export default UserProfile;
+export default UserProfilePage;
