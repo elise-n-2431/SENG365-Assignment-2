@@ -1,8 +1,8 @@
 import React from 'react';
-import { Typography, Chip, Avatar } from '@mui/material';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import {Typography, Chip, Avatar, Button} from '@mui/material';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import CommentSection from "../components/CommentSection.tsx";
 
 interface Category { categoryId: number; name: string; }
 interface City { cityId: number; name: string; }
@@ -18,6 +18,13 @@ interface Blog {
     numReactions: number;
     categoryIds: number[];
 }
+const REACTIONS = [
+    { value: 'REACTION_1', label: '😡' },
+    { value: 'REACTION_2', label: '😕' },
+    { value: 'REACTION_3', label: '😐' },
+    { value: 'REACTION_4', label: '😊' },
+    { value: 'REACTION_5', label: '🤩' },
+];
 
 const API_BASE = 'http://localhost:4941/api/v1';
 
@@ -30,7 +37,7 @@ const formatDate = (dateStr: string) =>
 
 const BlogDetailPage = () => {
     const { id } = useParams();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [blog, setBlog] = React.useState<Blog | null>(null);
     const [categories, setCategories] = React.useState<Category[]>([]);
@@ -38,12 +45,59 @@ const BlogDetailPage = () => {
     const [imgError, setImgError] = React.useState(false);
     const [avatarError, setAvatarError] = React.useState(false);
     const [errorFlag, setErrorFlag] = React.useState(false);
+    const [currentReaction, setCurrentReaction] = React.useState<string | null>(null);
+
+    const [reactions, setReactions] = React.useState<{userId: number, reaction: string}[]>([]);
+
+    const fetchReactions = () => {
+        axios.get(`${API_BASE}/blogs/${id}/react`)
+            .then((res) => {
+                setReactions(res.data);
+                const mine = res.data.find((r: any) => r.userId === Number(loggedInUserId));
+                if (mine) setCurrentReaction(mine.reaction);
+            });
+    };
+
+    React.useEffect(() => {
+        if (!blog) return;
+        fetchReactions();
+    }, [id, blog]);
+
+    const token = localStorage.getItem('token');
+    const handleDeleteBlog = () => {
+        axios.delete(`${API_BASE}/blogs/${id}`, { headers: { 'X-Authorization': token } })
+            .then(() => {
+                navigate('/');
+            })
+            .catch(() => {
+                setErrorFlag(true)
+            });
+    };
+
+    const handleReaction = (reaction: string) => {
+        if (currentReaction === reaction) {
+            axios.delete(`${API_BASE}/blogs/${id}/react`, { headers: { 'X-Authorization': token } })
+                .then(() => { setCurrentReaction(null); fetchReactions(); });
+        } else {
+            axios.post(`${API_BASE}/blogs/${id}/react`, { reaction }, { headers: { 'X-Authorization': token } })
+                .then(() => { setCurrentReaction(reaction); fetchReactions(); });
+        }
+    };
 
     React.useEffect(() => {
         axios.get(`${API_BASE}/blogs/${id}`)
             .then((res) => setBlog(res.data))
             .catch(() => setErrorFlag(true));
     }, [id]);
+
+    React.useEffect(() => {
+        if (!token || !blog) return;
+        axios.get(`${API_BASE}/blogs/${id}/react`)
+            .then((res) => {
+                const mine = res.data.find((r: any) => r.userId === Number(loggedInUserId));
+                if (mine) setCurrentReaction(mine.reaction);
+            });
+    }, [id, blog]);
 
     React.useEffect(() => {
         axios.get(`${API_BASE}/blogs/categories`).then((res) => setCategories(res.data));
@@ -59,6 +113,9 @@ const BlogDetailPage = () => {
     const blogImageUrl = `${API_BASE}/blogs/${blog.blogId}/image`;
     const creatorImageUrl = `${API_BASE}/users/${blog.creatorId}/image`;
     const creatorName = `${blog.creatorFirstName} ${blog.creatorLastName}`;
+    const loggedInUserId = localStorage.getItem("userId");
+    const isAuthorised = Number(loggedInUserId) === Number(blog.creatorId);
+    const canReact = Number(loggedInUserId) !== Number(blog.creatorId) && !!token;
 
     return (
         <div>
@@ -101,10 +158,36 @@ const BlogDetailPage = () => {
                 })}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <ThumbUpIcon fontSize="small" />
-                <Typography variant="body2">{blog.numReactions}</Typography>
+            <div style={{ display: 'flex', gap: 8, margin: '8px 0' }}>
+                {REACTIONS.map(({ value, label }) => {
+                    const count = reactions.filter(r => r.reaction === value).length;
+                    return (
+                        <Button
+                            key={value}
+                            variant={currentReaction === value ? 'contained' : 'outlined'}
+                            onClick={() => canReact ? handleReaction(value) : undefined}
+                            disabled={!canReact}
+                            style={{ minWidth: 64 }}
+                        >
+                            {label} {count > 0 && <span style={{ marginLeft: 4 }}>{count}</span>}
+                        </Button>
+                    );
+                })}
             </div>
+
+            {isAuthorised && (
+                <><Link to={`/blogs/${id}/edit`}>
+                    <Button variant="contained" style={{margin: 8}}>
+                        Edit Blog
+                    </Button>
+                </Link>
+                    <Button variant="contained" onClick={handleDeleteBlog}>Delete Blog</Button>
+                </>
+            )}
+
+            <CommentSection blogId={Number(id)} userId={blog.creatorId} />
+
+
         </div>
 
 

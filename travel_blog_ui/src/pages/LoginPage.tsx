@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 
 const API_BASE = 'http://localhost:4941/api/v1';
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }: { onLogin?: () => void }) => {
     const navigate = useNavigate();
 
     const [email, setEmail] = React.useState('');
@@ -27,6 +27,7 @@ const LoginPage = () => {
                 localStorage.setItem('firstName', res.data.firstName);
                 localStorage.setItem('lastName', res.data.lastName);
                 setErrorFlag(false);
+                onLogin?.();
                 navigate('/');
             })
             .catch((err) => {

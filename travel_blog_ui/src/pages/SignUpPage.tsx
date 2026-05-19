@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 
 const API_BASE = 'http://localhost:4941/api/v1';
 
-const SignUp = () => {
+const SignUp = ({ onLogin }: { onLogin?: () => void }) => {
     const navigate = useNavigate();
 
     const [errorFlag, setErrorFlag] = React.useState(false);
@@ -17,7 +17,7 @@ const SignUp = () => {
     const [password, setPassword] = React.useState(location.state?.password ?? '');
     const [firstName, setFirst] = React.useState(location.state?.firstName ?? '');
     const [lastName, setLast] = React.useState(location.state?.lastName ?? '');
-    const [imgURL, setURL] = React.useState(location.state?.imgURL ?? '');
+    const [imageFile, setImageFile] = React.useState<File | null>(null);
 
 
     const handleSignUp = () => {
@@ -25,16 +25,26 @@ const SignUp = () => {
             .then(() => {
                 return axios.post(`${API_BASE}/users/login`, { email, password });
             })
-
-            // Handle image sending seperately after
-
-            .then((res) => {
+            .then(async (res) => {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('userId', res.data.userId);
                 localStorage.setItem('firstName', firstName);
                 localStorage.setItem('lastName', lastName);
                 setErrorFlag(false);
+
+                if (imageFile) {
+                    await axios.put(`${API_BASE}/users/${res.data.userId}/image`, imageFile, {
+                        headers: {
+                            'X-Authorization': res.data.token,
+                            'Content-Type': imageFile.type,  // e.g. "image/png", "image/jpeg", "image/gif"
+                        }
+                    });
+                }
+
+                onLogin?.();
                 navigate('/');
+
+
             })
             .catch((err) => {
                 setErrorFlag(true);
@@ -82,11 +92,11 @@ const SignUp = () => {
                 />
             </div>
             <div style={{ marginBottom: 8 }}>
-                <label>Image</label><br />
+                <label>Image (optional)</label><br />
                 <input
-                    type="text"
-                    value={imgURL}
-                    onChange={(e) => setURL(e.target.value)}
+                    type="file"
+                    accept="image/png, image/jpeg, image/gif"
+                    onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
                 />
             </div>
 

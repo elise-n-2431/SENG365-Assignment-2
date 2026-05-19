@@ -19,6 +19,7 @@ import NavBar from "./components/NavBar.tsx";
 import SignUpPage from "./pages/SignUpPage";
 
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import React from "react";
 
 const theme = createTheme({
   palette: {
@@ -26,17 +27,22 @@ const theme = createTheme({
   },
 });
 
+
 export default function App() {
+
+  const [navKey, setNavKey] = React.useState(0);
+  const triggerNavRefresh = () => setNavKey(k => k + 1);
+
   return (
       <ThemeProvider theme={theme}>
         <CssBaseline />  {/* resets background to dark and sets base text colour */}
           <Router>
-            <NavBar />
+            <NavBar refreshKey={navKey} />
             <Routes>
               {/* Public */}
               <Route path="/" element={<BlogsPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<SignUpPage />} />
+              <Route path="/login" element={<LoginPage onLogin={triggerNavRefresh} />} />
+              <Route path="/register" element={<SignUpPage onLogin={triggerNavRefresh}/>} />
 
               {/* Auth-required */}
               <Route path="/blogs/create" element={
@@ -45,12 +51,12 @@ export default function App() {
               <Route path="/blogs/:id/edit" element={
                 <ProtectedRoute><EditBlogPage /></ProtectedRoute>
               } />
+
+
               {/*<Route path="/my-blogs" element={*/}
               {/*  <ProtectedRoute><MyBlogsPage /></ProtectedRoute>*/}
               {/*} />*/}
-              <Route path="/users/:id/edit" element={
-                <ProtectedRoute><EditProfilePage /></ProtectedRoute>
-              } />
+              <Route path="/users/:id/edit" element={<EditProfilePage onProfileUpdate={triggerNavRefresh} />} />
 
               <Route path="/blogs/:id" element={<BlogDetailPage />} />
               <Route path="/users/:id" element={<UserProfilePage />} />

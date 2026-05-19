@@ -4,10 +4,9 @@ import { Typography, Avatar } from '@mui/material';
 
 const API_BASE = 'http://localhost:4941/api/v1';
 
-const NavBar = () => {
+const NavBar = ({ refreshKey }: { refreshKey: number }) => {
     const navigate = useNavigate();
 
-    // Read auth state from localStorage — set these on login, clear on logout
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
     const firstName = localStorage.getItem('firstName') ?? '';
@@ -15,9 +14,16 @@ const NavBar = () => {
 
     const isLoggedIn = token !== null;
     const userName = `${firstName} ${lastName}`.trim();
-    const userImageUrl = `${API_BASE}/users/${userId}/image`;
+
+    // Cache-bust so the browser re-fetches after an image update
+    const userImageUrl = `${API_BASE}/users/${userId}/image?t=${refreshKey}`;
 
     const [avatarError, setAvatarError] = React.useState(false);
+
+    // Reset avatar error when refreshKey changes (e.g. new image uploaded)
+    React.useEffect(() => {
+        setAvatarError(false);
+    }, [refreshKey]);
 
     const handleLogout = () => {
         localStorage.removeItem('userId');
@@ -27,6 +33,7 @@ const NavBar = () => {
         navigate('/login');
     };
 
+    // ... rest of JSX unchanged
     return (
         <nav style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '8px 16px', borderBottom: '1px solid #ccc' }}>
 

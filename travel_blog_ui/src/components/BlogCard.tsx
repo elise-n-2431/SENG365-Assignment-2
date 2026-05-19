@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link,} from 'react-router-dom';
 import { Card, CardContent, CardMedia, CardActionArea, Typography, Chip, Avatar } from '@mui/material';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 interface BlogCardProps {
     blog: Blog;
@@ -103,7 +103,7 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
 
                     {/* Reaction count */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <ThumbUpIcon fontSize="small" color="action" />
+                        <EmojiEmotionsIcon fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">{blog.numReactions}</Typography>
                     </div>
                 </CardContent>
