@@ -62,6 +62,9 @@ const BlogsPage = () => {
     const [lowerBound, setLowerBound] = React.useState(0);
     const [upperBound, setUpperBound] = React.useState(100);
 
+    const onUpdateReactions=(lo: number, hi: number) => {
+        setLowerBound(lo); setUpperBound(hi); }
+
     const [appliedCategories, setAppliedCategories] = React.useState<number[]>([]);
     const [appliedCities, setAppliedCities] = React.useState<number[]>([]);
     const [appliedLower, setAppliedLower] = React.useState(0);
@@ -126,8 +129,7 @@ const BlogsPage = () => {
                      reactionUpper = {100}
                      onToggleCategory={toggleCategory}
                      onToggleCity={toggleCity}
-                     onUpdateLower={setLowerBound}
-                     onUpdateUpper={setUpperBound}
+                     onUpdateReactions={onUpdateReactions}
                      onApply={applyFilters}/>
             <main style={{ flex: 1, padding: '20px' }}>
                 <h1>Blogs</h1>

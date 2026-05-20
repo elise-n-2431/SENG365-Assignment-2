@@ -2,6 +2,9 @@ import React from 'react';
 import {Link,} from 'react-router-dom';
 import { Card, CardContent, CardMedia, CardActionArea, Typography, Chip, Avatar } from '@mui/material';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import CommentIcon from '@mui/icons-material/Comment';
+
+import axios from "axios";
 
 interface BlogCardProps {
     blog: Blog;
@@ -32,6 +35,16 @@ interface Blog {
     categoryIds: number[];
 }
 
+interface BlogComment {
+    commentId: number;
+    comment: string;
+    commenterId: number;
+    commenterFirstName: string;
+    commenterLastName: string;
+    timestamp: string;
+    parentId: number;
+}
+
 const API_BASE = 'http://localhost:4941/api/v1';
 
 const formatDate = (dateStr: string) =>
@@ -46,20 +59,33 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
 
     const [imgError, setImgError] = React.useState(false);
     const [avatarError, setAvatarError] = React.useState(false);
+    const [uniqueCommenters, setUniqueCommenters] = React.useState(0);
 
     const blogImageUrl = `${API_BASE}/blogs/${blog.blogId}/image`;
     const creatorImageUrl = `${API_BASE}/users/${blog.creatorId}/image`;
     const creatorName = `${blog.creatorFirstName} ${blog.creatorLastName}`;
 
+    const countUnique = (comments: BlogComment[]) => {
+        const uniqueIds = new Set(comments.map(c => c.commenterId));
+        setUniqueCommenters(uniqueIds.size);
+    }
+
+    React.useEffect(() => {
+        axios.get(`${API_BASE}/blogs/${blog.blogId}/comments`)
+            .then((res) => {
+                countUnique(res.data);
+            });
+    }, []);
+
     return (
-        <Card style={{ width: 350 }}>
+        <Card style={{ width: 300 }}>
             <CardActionArea component={Link} to={`/blogs/${blog.blogId}`}>
 
                 {/* Blog image */}
                 {!imgError ? (
                     <CardMedia
                         component="img"
-                        height="160"
+                        height="150"
                         image={blogImageUrl}
                         alt={blog.title}
                         onError={() => setImgError(true)}
@@ -95,6 +121,9 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
 
                     {/* Categories */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 8 }}>
+                        {blog.series && (
+                            <Chip key="series" label={blog.series} size="small" color="primary" />
+                        )}
                         {blog.categoryIds.map((id) => {
                             const name = categories.find((c) => c.categoryId === id)?.name ?? `Cat ${id}`;
                             return <Chip key={id} label={name} size="small" />;
@@ -105,6 +134,8 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <EmojiEmotionsIcon fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">{blog.numReactions}</Typography>
+                        <CommentIcon fontSize="small" color="action" />
+                        <Typography variant="body2" color="text.secondary">{uniqueCommenters}</Typography>
                     </div>
                 </CardContent>
 

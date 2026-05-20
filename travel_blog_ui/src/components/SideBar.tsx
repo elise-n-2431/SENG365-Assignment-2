@@ -13,12 +13,11 @@ interface Props {
     reactionUpper: number;
     onToggleCategory: (id: number) => void;
     onToggleCity: (id: number) => void;
-    onUpdateLower: (val: number) => void;
-    onUpdateUpper: (val: number) => void;
+    onUpdateReactions: (lower: number, upper: number) => void;
     onApply: () => void;
 }
 
-const SideBar = ({ selectedCategories, selectedCities, reactionLower, reactionUpper, onToggleCategory, onToggleCity, onUpdateLower, onUpdateUpper, onApply}: Props) => {
+const SideBar = ({ selectedCategories, selectedCities, reactionLower, reactionUpper, onToggleCategory, onToggleCity, onUpdateReactions, onApply}: Props) => {
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [cities, setCities] = React.useState<City[]>([]);
 
@@ -131,13 +130,11 @@ const SideBar = ({ selectedCategories, selectedCities, reactionLower, reactionUp
                         value={[reactionLower, reactionUpper]}
                         onChange={(_e, val) => {
                             const [lo, hi] = val as number[];
-                            onUpdateLower(lo);
-                            onUpdateUpper(hi);
+                            onUpdateReactions(lo, hi);
                         }}
                         min={0}
                         max={100}
                         valueLabelDisplay="auto"
-                        style={{ marginTop: 8 }}
                     />
                     <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                         <input
@@ -145,16 +142,14 @@ const SideBar = ({ selectedCategories, selectedCities, reactionLower, reactionUp
                             value={reactionLower}
                             min={0}
                             max={reactionUpper}
-                            onChange={(e) => onUpdateLower(Number(e.target.value))}
-                            style={{ width: '100%' }}
+                            onChange={(e) => onUpdateReactions(Number(e.target.value), reactionUpper)}
                         />
                         <input
                             type="number"
                             value={reactionUpper}
                             min={reactionLower}
                             max={100}
-                            onChange={(e) => onUpdateUpper(Number(e.target.value))}
-                            style={{ width: '100%' }}
+                            onChange={(e) => onUpdateReactions(reactionLower, Number(e.target.value))}
                         />
                     </div>
                 </>

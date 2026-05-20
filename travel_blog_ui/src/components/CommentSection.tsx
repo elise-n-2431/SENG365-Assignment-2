@@ -116,7 +116,7 @@ const CommentSection = ({ blogId, userId }: { blogId: number, userId: number | n
 
                 return (
                     <div key={parent.commentId} style={{ marginBottom: 12 }}>
-                        <CommentCard comment={parent} />
+                        <CommentCard comment={parent} replyCount={replies.length} />
 
                         {/* Replies */}
                         {replies.map((reply) => (

@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Typography, Avatar } from '@mui/material';
+import { ConfirmDialog } from "./PopUp.tsx";
 
 const API_BASE = 'http://localhost:4941/api/v1';
 
 const NavBar = ({ refreshKey }: { refreshKey: number }) => {
     const navigate = useNavigate();
+    const [dialogOpen, setDialogOpen] = React.useState(false);
+
 
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
@@ -33,18 +36,23 @@ const NavBar = ({ refreshKey }: { refreshKey: number }) => {
         navigate('/login');
     };
 
-    // ... rest of JSX unchanged
     return (
         <nav style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '8px 16px', borderBottom: '1px solid #ccc' }}>
 
             <Link to="/">Home</Link>
 
             {/* Push user section to the right */}
-            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 20 }}>
                 {isLoggedIn ? (
                     <>
                         {/* Clicking avatar/name goes to profile */}
+                        <Link to={`/my-blogs`} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+                            <Typography variant="body2">My Blogs</Typography>
+                        </Link>
+
                         <Link to={`/users/${userId}`} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+                            <Typography variant="body2">My Profile</Typography>
+
                             <Avatar
                                 src={avatarError ? undefined : userImageUrl}
                                 alt={userName}
@@ -53,9 +61,18 @@ const NavBar = ({ refreshKey }: { refreshKey: number }) => {
                             >
                                 {userName[0]}
                             </Avatar>
-                            <Typography variant="body2">{userName}</Typography>
                         </Link>
-                        <button onClick={handleLogout}>Log out</button>
+                        <ConfirmDialog
+                            open={dialogOpen}
+                            title="Log out"
+                            message="Are you sure you want to log out?"
+                            confirmLabel="Log out"
+                            onConfirm={() => { handleLogout(); setDialogOpen(false); }}
+                            onCancel={() => setDialogOpen(false)}
+                        />
+
+                        {/* rest of nav */}
+                        <button onClick={() => setDialogOpen(true)}>Log out</button>
                     </>
                 ) : (
                     <>

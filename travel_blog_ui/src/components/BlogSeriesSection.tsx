@@ -57,13 +57,16 @@ const BlogSeries = ({ id }: { id: number }) => {
     if (grouped.has('No Series')) sortedKeys.push('No Series');
 
     return (
-        <div>
+        <div style={{ textAlign: 'center' }}>
             {sortedKeys.map((seriesName) => (
-                <div key={seriesName} style={{ marginBottom: 24 }}>
+                <div key={seriesName} style={{ marginBottom: 24, display: 'inline-block', width: '80%' }}>
                     <h3>{seriesName}</h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gap: 16,
+                    }}>
                         {grouped.get(seriesName)!.map((blog) => (
-                            // AC.4 — easy way to read content, wrapping card in a Link
                             <Link key={blog.blogId} to={`/blogs/${blog.blogId}`} style={{ textDecoration: 'none' }}>
                                 <BlogCard blog={blog} categories={categories} cities={cities} />
                             </Link>

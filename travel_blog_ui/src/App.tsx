@@ -20,6 +20,7 @@ import SignUpPage from "./pages/SignUpPage";
 
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import React from "react";
+import MyBlogsPage from "./pages/MyBlogs.tsx";
 
 const theme = createTheme({
   palette: {
@@ -51,11 +52,10 @@ export default function App() {
                 <Route path="/blogs/:id/edit" element={
                   <ProtectedRoute><EditBlogPage /></ProtectedRoute>
                 } />
+                <Route path="/my-blogs" element={
+                  <ProtectedRoute><MyBlogsPage /></ProtectedRoute>
+                }/>
 
-
-                {/*<Route path="/my-blogs" element={*/}
-                {/*  <ProtectedRoute><MyBlogsPage /></ProtectedRoute>*/}
-                {/*} />*/}
                 <Route path="/users/:id/edit" element={<EditProfilePage onProfileUpdate={triggerNavRefresh} />} />
 
                 <Route path="/blogs/:id" element={<BlogDetailPage />} />

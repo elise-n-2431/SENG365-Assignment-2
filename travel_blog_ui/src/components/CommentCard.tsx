@@ -9,7 +9,6 @@ interface Comment {
     commenterLastName: string;
     timestamp: string;
     parentId: number | null;
-    replyCount?: number; // pass in if top-level, calculated from full comments list
 }
 
 const API_BASE = 'http://localhost:4941/api/v1';
@@ -23,9 +22,11 @@ const formatDate = (dateStr: string) =>
 
 interface CommentCardProps {
     comment: Comment;
+    replyCount?: number;
+
 }
 
-const CommentCard = ({ comment }: CommentCardProps) => {
+const CommentCard = ({ comment, replyCount }: CommentCardProps) => {
     const [avatarError, setAvatarError] = React.useState(false);
     const commenterImageUrl = `${API_BASE}/users/${comment.commenterId}/image`;
     const commenterName = `${comment.commenterFirstName} ${comment.commenterLastName}`;
@@ -52,9 +53,9 @@ const CommentCard = ({ comment }: CommentCardProps) => {
 
                 <Typography variant="body2">{comment.comment}</Typography>
 
-                {comment.parentId === null && comment.replyCount !== undefined && (
+                {comment.parentId === null && replyCount !== undefined && replyCount > 0 && (
                     <Typography variant="caption" color="text.secondary" style={{ marginTop: 4, display: 'block' }}>
-                        {comment.replyCount} {comment.replyCount === 1 ? 'reply' : 'replies'}
+                        {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
                     </Typography>
                 )}
             </CardContent>

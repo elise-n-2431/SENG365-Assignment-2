@@ -3,6 +3,8 @@ import {Typography, Chip, Avatar, Button} from '@mui/material';
 import axios from 'axios';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import CommentSection from "../components/CommentSection.tsx";
+import SimilarBlogs from "../components/SimilarBlogsSection.tsx";
+import {ConfirmDialog, ErrorDialog} from "../components/PopUp.tsx";
 
 interface Category { categoryId: number; name: string; }
 interface City { cityId: number; name: string; }
@@ -48,6 +50,10 @@ const BlogDetailPage = () => {
     const [errorFlag, setErrorFlag] = React.useState(false);
     const [currentReaction, setCurrentReaction] = React.useState<string | null>(null);
 
+    const [dialogOpen, setDialogOpen] = React.useState(false);
+    const [errorOpen, setErrorOpen] = React.useState(false);
+    const [signInOpen, setSignInOpen] = React.useState(false);
+
     const [reactions, setReactions] = React.useState<{userId: number, reaction: string}[]>([]);
 
     const fetchReactions = () => {
@@ -68,10 +74,10 @@ const BlogDetailPage = () => {
     const handleDeleteBlog = () => {
         axios.delete(`${API_BASE}/blogs/${id}`, { headers: { 'X-Authorization': token } })
             .then(() => {
-                navigate('/');
+                navigate(`/users/${id}`);
             })
             .catch(() => {
-                setErrorFlag(true)
+                setErrorOpen(true);
             });
     };
 
@@ -178,27 +184,49 @@ const BlogDetailPage = () => {
                 })}
             </div>
 
+            <ConfirmDialog //apply setSignInOpen to the relevant locations
+                open={signInOpen}
+                title="Sign In"
+                message="User sign in is required to perform this task"
+                confirmLabel="Ok"
+                onConfirm={() => {navigate(`/login`); setSignInOpen(false);} }
+                onCancel={() => setSignInOpen(false)}
+            />
+
             {isAuthorised && (
-                <><Link to={`/blogs/${id}/edit`}>
-                    <Button variant="contained" style={{margin: 8}}>
-                        Edit Blog
+                <>
+                    <ConfirmDialog
+                        open={dialogOpen}
+                        title="Delete Blog"
+                        message="Are you sure you want to delete this blog?"
+                        confirmLabel="Delete Blog"
+                        onConfirm={() => { handleDeleteBlog(); setDialogOpen(false); }}
+                        onCancel={() => setDialogOpen(false)}
+                    />
+                    <ErrorDialog
+                        open={errorOpen}
+                        title="Error"
+                        message="Blogs with comments cannot be deleted."
+                        confirmLabel="Ok"
+                        onConfirm={() => setErrorOpen(false)}
+                    />
+
+                    <Link to={`/blogs/${id}/edit`}>
+                        <Button variant="contained" style={{ margin: 8 }}>
+                            Edit Blog
+                        </Button>
+                    </Link>
+
+                    <Button variant="contained" color="error" onClick={() => setDialogOpen(true)}>
+                        Delete Blog
                     </Button>
-                </Link>
-                    <Button variant="contained" onClick={handleDeleteBlog}>Delete Blog</Button>
                 </>
             )}
-
+            <SimilarBlogs blog = {blog} />
             <CommentSection blogId={Number(id)} userId={blog.creatorId} />
-
 
         </div>
 
-
-
-
-    //     Similar blogs
-    //     Comments
-    //     Reactions
     );
 };
 
