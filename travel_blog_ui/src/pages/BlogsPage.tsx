@@ -59,24 +59,23 @@ const BlogsPage = () => {
         );
     };
 
-    const [lowerBound, setLowerBound] = React.useState(0);
-    const [upperBound, setUpperBound] = React.useState(100);
-
-    const onUpdateReactions=(lo: number, hi: number) => {
-        setLowerBound(lo); setUpperBound(hi); }
-
+    const [lowerBound, setLowerBound] = React.useState('');
     const [appliedCategories, setAppliedCategories] = React.useState<number[]>([]);
     const [appliedCities, setAppliedCities] = React.useState<number[]>([]);
     const [appliedLower, setAppliedLower] = React.useState(0);
-    const [appliedUpper, setAppliedUpper] = React.useState(100);
+
+    const onUpdateReactions = (lo: string) => {
+        setLowerBound(lo);
+    };
 
     const applyFilters = () => {
         setAppliedCategories(selectedCategories);
         setAppliedCities(selectedCities);
-        setAppliedLower(lowerBound);
-        setAppliedUpper(upperBound);
+        setAppliedLower(lowerBound === '' ? 0 : Math.max(0, parseInt(lowerBound)));
         setPage(1);
     };
+
+
 
     React.useEffect(() => {
         const params: Record<string, any> = {
@@ -87,6 +86,7 @@ const BlogsPage = () => {
         if (search) params.q = search;
         if (appliedCategories.length > 0) params.categoryIds = appliedCategories;
         if (appliedCities.length > 0) params.cityIds = appliedCities;
+        if (appliedLower > 0) params.minReactions = appliedLower;
 
         axios.get(`${API_BASE}/blogs`, { params, paramsSerializer: p =>
                 new URLSearchParams(
@@ -105,7 +105,7 @@ const BlogsPage = () => {
                 setErrorFlag(true);
                 setErrorMessage(err.toString());
             });
-    }, [search, sortBy, page, appliedCategories, appliedCities, appliedLower, appliedUpper]);
+    }, [search, sortBy, page, appliedCategories, appliedCities, appliedLower]);
 
     React.useEffect(() => {
         axios.get(`${API_BASE}/blogs/categories`).then((res) => setCategories(res.data));
@@ -125,8 +125,7 @@ const BlogsPage = () => {
         <div style={{ display: 'flex', minHeight: '100vh', maxWidth: 1400, margin: '0 auto', width: '100%' }}>
             <SideBar selectedCategories={selectedCategories}
                      selectedCities={selectedCities}
-                     reactionLower = {0}
-                     reactionUpper = {100}
+                     reactionLower={lowerBound}
                      onToggleCategory={toggleCategory}
                      onToggleCity={toggleCity}
                      onUpdateReactions={onUpdateReactions}

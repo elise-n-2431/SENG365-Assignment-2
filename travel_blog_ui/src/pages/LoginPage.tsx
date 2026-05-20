@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import { Button } from "@mui/material";
+import useAuthStore from "../store/authStore.ts";
 
 const API_BASE = 'http://localhost:4941/api/v1';
 
@@ -12,22 +13,21 @@ const LoginPage = ({ onLogin }: { onLogin?: () => void }) => {
     const [password, setPassword] = React.useState('');
     const [errorFlag, setErrorFlag] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState('');
+    const login = useAuthStore(state => state.login);
+
 
     const handleLogin = () => {
         axios.post(`${API_BASE}/users/login`, { email, password })
             .then((res) => {
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('userId', res.data.userId);
-                // fetch user details to get name for navbar
-                return axios.get(`${API_BASE}/users/${res.data.userId}`, {
-                    headers: { 'X-Authorization': res.data.token }
+                const { token, userId } = res.data;
+                return axios.get(`${API_BASE}/users/${userId}`, {
+                    headers: { 'X-Authorization': token }
+                }).then((userRes) => {
+                    login(token, userId, userRes.data.firstName, userRes.data.lastName);
                 });
             })
-            .then((res) => {
-                localStorage.setItem('firstName', res.data.firstName);
-                localStorage.setItem('lastName', res.data.lastName);
+            .then(() => {
                 setErrorFlag(false);
-                onLogin?.();
                 navigate('/');
             })
             .catch((err) => {

@@ -25,15 +25,15 @@ interface Blog {
     categoryIds: number[];
 }
 
-interface User{
-    // userId: number,
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    imageFilename: string,
-    authToken: string
-}
+// interface User{
+//     // userId: number,
+//     firstName: string,
+//     lastName: string,
+//     email: string,
+//     password: string,
+//     imageFilename: string,
+//     authToken: string
+// }
 
 const API_BASE = 'http://localhost:4941/api/v1';
 

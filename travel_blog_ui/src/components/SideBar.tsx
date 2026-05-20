@@ -1,5 +1,5 @@
 import React from 'react';
-import {Typography, FormControlLabel, Checkbox, Divider, Button, Slider} from '@mui/material';
+import {Typography, FormControlLabel, Checkbox, Divider, Button, TextField} from '@mui/material';
 
 const API_BASE = 'http://localhost:4941/api/v1';
 
@@ -9,15 +9,13 @@ interface City { cityId: number; name: string; }
 interface Props {
     selectedCategories: number[];
     selectedCities: number[];
-    reactionLower: number;
-    reactionUpper: number;
-    onToggleCategory: (id: number) => void;
+    reactionLower: string;
+    onUpdateReactions: (lo: string) => void;
     onToggleCity: (id: number) => void;
-    onUpdateReactions: (lower: number, upper: number) => void;
     onApply: () => void;
 }
 
-const SideBar = ({ selectedCategories, selectedCities, reactionLower, reactionUpper, onToggleCategory, onToggleCity, onUpdateReactions, onApply}: Props) => {
+const SideBar = ({ selectedCategories, selectedCities, reactionLower, onToggleCategory, onToggleCity, onUpdateReactions, onApply}: Props) => {
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [cities, setCities] = React.useState<City[]>([]);
 
@@ -126,32 +124,15 @@ const SideBar = ({ selectedCategories, selectedCities, reactionLower, reactionUp
                     <Divider style={{ marginBottom: 8 }} />
                     <Typography variant="subtitle2" gutterBottom>Reaction Count</Typography>
                     <Divider style={{ marginBottom: 8 }} />
-                    <Slider
-                        value={[reactionLower, reactionUpper]}
-                        onChange={(_e, val) => {
-                            const [lo, hi] = val as number[];
-                            onUpdateReactions(lo, hi);
-                        }}
-                        min={0}
-                        max={100}
-                        valueLabelDisplay="auto"
+                    <TextField
+                        type="number"
+                        label="Min reactions"
+                        size="small"
+                        value={reactionLower}
+                        onChange={(e) => onUpdateReactions(e.target.value)}
+                        slotProps={{ htmlInput: { min: 0 } }}
+                        fullWidth
                     />
-                    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                        <input
-                            type="number"
-                            value={reactionLower}
-                            min={0}
-                            max={reactionUpper}
-                            onChange={(e) => onUpdateReactions(Number(e.target.value), reactionUpper)}
-                        />
-                        <input
-                            type="number"
-                            value={reactionUpper}
-                            min={reactionLower}
-                            max={100}
-                            onChange={(e) => onUpdateReactions(reactionLower, Number(e.target.value))}
-                        />
-                    </div>
                 </>
             )}
 

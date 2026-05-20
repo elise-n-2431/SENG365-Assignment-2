@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import { Button } from "@mui/material";
+import useAuthStore from "../store/authStore.ts";
 
 
 const API_BASE = 'http://localhost:4941/api/v1';
@@ -18,6 +19,7 @@ const SignUp = ({ onLogin }: { onLogin?: () => void }) => {
     const [firstName, setFirst] = React.useState(location.state?.firstName ?? '');
     const [lastName, setLast] = React.useState(location.state?.lastName ?? '');
     const [imageFile, setImageFile] = React.useState<File | null>(null);
+    const login = useAuthStore(state => state.login);
 
 
     const handleSignUp = () => {
@@ -26,10 +28,8 @@ const SignUp = ({ onLogin }: { onLogin?: () => void }) => {
                 return axios.post(`${API_BASE}/users/login`, { email, password });
             })
             .then(async (res) => {
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('userId', res.data.userId);
-                localStorage.setItem('firstName', firstName);
-                localStorage.setItem('lastName', lastName);
+                login(res.data.token,  res.data.userId, firstName, lastName);
+
                 setErrorFlag(false);
 
                 if (imageFile) {
