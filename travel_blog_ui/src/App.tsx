@@ -38,32 +38,32 @@ export default function App() {
         <CssBaseline />  {/* resets background to dark and sets base text colour */}
           <Router>
             <NavBar refreshKey={navKey} />
-            <Routes>
-              {/* Public */}
-              <Route path="/" element={<BlogsPage />} />
-              <Route path="/login" element={<LoginPage onLogin={triggerNavRefresh} />} />
-              <Route path="/register" element={<SignUpPage onLogin={triggerNavRefresh}/>} />
+              <Routes>
+                {/* Public */}
+                <Route path="/" element={<BlogsPage />} />
+                <Route path="/login" element={<LoginPage onLogin={triggerNavRefresh} />} />
+                <Route path="/register" element={<SignUpPage onLogin={triggerNavRefresh}/>} />
 
-              {/* Auth-required */}
-              <Route path="/blogs/create" element={
-                <ProtectedRoute><NewBlogPage /></ProtectedRoute>
-              } />
-              <Route path="/blogs/:id/edit" element={
-                <ProtectedRoute><EditBlogPage /></ProtectedRoute>
-              } />
-
-
-              {/*<Route path="/my-blogs" element={*/}
-              {/*  <ProtectedRoute><MyBlogsPage /></ProtectedRoute>*/}
-              {/*} />*/}
-              <Route path="/users/:id/edit" element={<EditProfilePage onProfileUpdate={triggerNavRefresh} />} />
-
-              <Route path="/blogs/:id" element={<BlogDetailPage />} />
-              <Route path="/users/:id" element={<UserProfilePage />} />
-              <Route path="*" element={<NotFound/>}/>
+                {/* Auth-required */}
+                <Route path="/blogs/create" element={
+                  <ProtectedRoute><NewBlogPage /></ProtectedRoute>
+                } />
+                <Route path="/blogs/:id/edit" element={
+                  <ProtectedRoute><EditBlogPage /></ProtectedRoute>
+                } />
 
 
-            </Routes>
+                {/*<Route path="/my-blogs" element={*/}
+                {/*  <ProtectedRoute><MyBlogsPage /></ProtectedRoute>*/}
+                {/*} />*/}
+                <Route path="/users/:id/edit" element={<EditProfilePage onProfileUpdate={triggerNavRefresh} />} />
+
+                <Route path="/blogs/:id" element={<BlogDetailPage />} />
+                <Route path="/users/:id" element={<UserProfilePage />} />
+                <Route path="*" element={<NotFound/>}/>
+
+
+              </Routes>
           </Router>
       </ThemeProvider>
   )

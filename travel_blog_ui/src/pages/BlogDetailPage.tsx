@@ -9,6 +9,7 @@ interface City { cityId: number; name: string; }
 interface Blog {
     blogId: number;
     title: string;
+    description: string;
     cityId: number;
     creationDate: string;
     creatorId: number;
@@ -134,6 +135,8 @@ const BlogDetailPage = () => {
             )}
 
             <Typography variant="h6">{blog.title}</Typography>
+            <Typography variant="body2">{blog.description}</Typography>
+
 
             <Link to={`/users/${blog.creatorId}`} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: 'inherit' }}>
                 <Avatar
