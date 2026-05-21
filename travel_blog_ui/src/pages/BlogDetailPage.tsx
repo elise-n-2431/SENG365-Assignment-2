@@ -125,17 +125,17 @@ const BlogDetailPage = () => {
     const canReact = Number(loggedInUserId) !== Number(blog.creatorId) && !!token;
 
     return (
-        <div>
+        <>
+        <div className="blog-detail">
             {!imgError ? (
                 <img
                     src={blogImageUrl}
                     alt={blog.title}
-                    height="160"
+                    className="blog-detail-image"
                     onError={() => setImgError(true)}
-                    style={{ objectFit: 'cover' }}
                 />
             ) : (
-                <div style={{ height: 160, background: '#eee' }}>
+                <div className="blog-detail-no-image">
                     <Typography variant="body2">No image</Typography>
                 </div>
             )}
@@ -143,8 +143,7 @@ const BlogDetailPage = () => {
             <Typography variant="h6">{blog.title}</Typography>
             <Typography variant="body2">{blog.description}</Typography>
 
-
-            <Link to={`/users/${blog.creatorId}`} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: 'inherit' }}>
+            <Link to={`/users/${blog.creatorId}`} className="blog-detail-creator-row">
                 <Avatar
                     src={avatarError ? undefined : creatorImageUrl}
                     alt={creatorName}
@@ -160,18 +159,18 @@ const BlogDetailPage = () => {
                 {cityName} · {formatDate(blog.creationDate)}
             </Typography>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            <div className="blog-detail-chips">
                 {blog.categoryIds.map((catId) => {
                     const name = categories.find((c) => c.categoryId === catId)?.name ?? `Cat ${catId}`;
                     return <Chip key={catId} label={name} size="small" />;
                 })}
             </div>
 
-            <div style={{ display: 'flex', gap: 8, margin: '8px 0' }}>
+            <div className="blog-detail-reactions">
                 {REACTIONS.map(({ value, label }) => {
                     const count = reactions.filter(r => r.reaction === value).length;
                     return (
-                        <Button
+                        <Button className="reaction-button"
                             key={value}
                             variant={currentReaction === value ? 'contained' : 'outlined'}
                             onClick={() => canReact ? handleReaction(value) : undefined}
@@ -184,12 +183,12 @@ const BlogDetailPage = () => {
                 })}
             </div>
 
-            <ConfirmDialog //apply setSignInOpen to the relevant locations
+            <ConfirmDialog
                 open={signInOpen}
                 title="Sign In"
                 message="User sign in is required to perform this task"
                 confirmLabel="Ok"
-                onConfirm={() => {navigate(`/login`); setSignInOpen(false);} }
+                onConfirm={() => { navigate(`/login`); setSignInOpen(false); }}
                 onCancel={() => setSignInOpen(false)}
             />
 
@@ -210,23 +209,20 @@ const BlogDetailPage = () => {
                         confirmLabel="Ok"
                         onConfirm={() => setErrorOpen(false)}
                     />
-
-                    <Link to={`/blogs/${id}/edit`}>
-                        <Button variant="contained" style={{ margin: 8 }}>
-                            Edit Blog
+                    <div className="blog-detail-actions">
+                        <Link to={`/blogs/${id}/edit`}>
+                            <Button variant="contained">Edit Blog</Button>
+                        </Link>
+                        <Button variant="contained" color="error" onClick={() => setDialogOpen(true)}>
+                            Delete Blog
                         </Button>
-                    </Link>
-
-                    <Button variant="contained" color="error" onClick={() => setDialogOpen(true)}>
-                        Delete Blog
-                    </Button>
+                    </div>
                 </>
             )}
-            <SimilarBlogs blog = {blog} />
-            <CommentSection blogId={Number(id)} userId={blog.creatorId} />
-
         </div>
-
+            <SimilarBlogs blog={blog} />
+            <CommentSection blogId={Number(id)} userId={blog.creatorId} />
+    </>
     );
 };
 

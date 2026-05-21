@@ -32,9 +32,9 @@ const CommentCard = ({ comment, replyCount }: CommentCardProps) => {
     const commenterName = `${comment.commenterFirstName} ${comment.commenterLastName}`;
 
     return (
-        <Card style={{ marginBottom: 8 }} variant="outlined">
+        <Card className="comment-card" variant="outlined">
             <CardContent>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                <div className="comment-card-header">
                     <Avatar
                         src={avatarError ? undefined : commenterImageUrl}
                         alt={commenterName}
@@ -43,18 +43,18 @@ const CommentCard = ({ comment, replyCount }: CommentCardProps) => {
                     >
                         {commenterName[0]}
                     </Avatar>
-                    <div>
-                        <Typography variant="body2" color="text.secondary">{commenterName}</Typography>
-                        <Typography variant="caption" color="text.secondary">
+                    <div className="comment-card-meta">
+                        <Typography variant="body2" color="text.secondary" className="comment-card-name">
+                            {commenterName}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" className="comment-card-date">
                             {formatDate(comment.timestamp)}
                         </Typography>
                     </div>
                 </div>
-
-                <Typography variant="body2">{comment.comment}</Typography>
-
+                <Typography variant="body2" className="comment-card-body">{comment.comment}</Typography>
                 {comment.parentId === null && replyCount !== undefined && replyCount > 0 && (
-                    <Typography variant="caption" color="text.secondary" style={{ marginTop: 4, display: 'block' }}>
+                    <Typography variant="caption" className="comment-card-reply-count">
                         {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
                     </Typography>
                 )}

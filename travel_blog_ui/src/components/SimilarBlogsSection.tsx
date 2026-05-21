@@ -58,7 +58,7 @@ const SimilarBlogs = ({ blog }: { blog: Blog }) => {
                 // Sort by score, with a random tiebreaker so same-score blogs aren't always in the same order
                 merged.sort((a, b) => b.score - a.score || Math.random() - 0.5);
 
-                setBlogs(merged.slice(0, 4));
+                setBlogs(merged.slice(0, 5));
                 setCategories(cats.data);
                 setCities(cityList.data);
             })
@@ -69,15 +69,9 @@ const SimilarBlogs = ({ blog }: { blog: Blog }) => {
     if (!blogs.length) return <div>No similar blogs found.</div>;
 
     return (
-        <div style={{ textAlign: 'center', marginTop: 32, marginBottom: 30 }}>
+        <div className="similar-blogs-wrapper">
             <h3>Similar Blogs</h3>
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: 16,
-                width: '90%',
-                margin: '0 auto',
-            }}>
+            <div className="similar-blogs-grid">
                 {blogs.map((b) => (
                     <Link key={b.blogId} to={`/blogs/${b.blogId}`} style={{ textDecoration: 'none' }}>
                         <BlogCard blog={b} categories={categories} cities={cities} />

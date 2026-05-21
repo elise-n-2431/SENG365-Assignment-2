@@ -1,3 +1,4 @@
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -51,7 +52,6 @@
 }
 
 #root {
-  width: 1400px;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -74,13 +74,13 @@
   flex-shrink: 0;
   position: sticky;
   top: 0;
-  height: 100svh;
+  max-height: 100svh;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 24px 16px;
-  border-right: 1px solid var(--border);
+  border: none;
+  box-shadow: none;
   box-sizing: border-box;
-
-  /* Match your theme */
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
@@ -132,4 +132,88 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* COMMENTS */
+#comments {
+  margin-top: 32px;
+}
+
+#comments .comment-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+#comments .comment-notice {
+  margin-bottom: 16px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+#comments .comment-thread {
+  margin-bottom: 12px;
+}
+
+#comments .comment-replies {
+  margin-left: 32px;
+}
+
+#comments .comment-reply-input {
+  margin-left: 32px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#comments .comment-reply-actions {
+  display: flex;
+  gap: 4px;
+}
+
+/* CommentCard */
+#comments .comment-card {
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: var(--bg);
+}
+
+#comments .comment-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+#comments .comment-card-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+#comments .comment-card-name {
+  font-size: 14px;
+  color: var(--text);
+}
+
+#comments .comment-card-date {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+#comments .comment-card-body {
+  font-size: 14px;
+  color: var(--text);
+}
+
+#comments .comment-card-reply-count {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.7;
 }

@@ -49,39 +49,37 @@ const UserProfilePage = () => {
     const loggedInUserId = localStorage.getItem("userId");
     const isAuthorised = Number(loggedInUserId) === Number(id);
 
-    return (<div>
-        <h1>{userName}</h1>
+    return (
+        <div className="profile-page">
+            <h1>{userName}</h1>
 
-        <div style={{ display: 'flex', gap: 8, width: 300 }}>
-            <Avatar
-                src={avatarError ? undefined : userImageUrl}
-                alt={userName}
-                style={{ width: 300, height: 300, fontSize: 14, alignItems: 'center', justifyContent: 'center' }}
-                onError={() => setAvatarError(true)}
-            >
-                {userName[0]}
-            </Avatar>
+            <div className="profile-avatar-wrapper">
+                <Avatar
+                    src={avatarError ? undefined : userImageUrl}
+                    alt={userName}
+                    style={{ width: 300, height: 300, fontSize: 14 }}
+                    onError={() => setAvatarError(true)}
+                >
+                    {userName[0]}
+                </Avatar>
+            </div>
+
+            {isAuthorised && (
+                <div className="profile-actions">
+                    <Link to={`/users/${id}/edit`}>
+                        <Button variant="contained">Edit Profile</Button>
+                    </Link>
+                    <Link to="/blogs/create">
+                        <Button variant="contained">New Blog</Button>
+                    </Link>
+                </div>
+            )}
+
+            {isAuthorised && <p className="profile-email">{user.email}</p>}
+
+            <BlogSeries id={userId} />
         </div>
-
-        {/* only if auth user */}
-        {isAuthorised && (
-            <><Link to={`/users/${id}/edit`}>
-                <Button variant="contained" style={{margin: 8}}>
-                    Edit Profile
-                </Button>
-            </Link><Link to="/blogs/create">
-                <Button variant="contained">New Blog</Button>
-            </Link>
-            </>
-        )}
-
-        {isAuthorised && (
-            <p>{user.email}</p>
-        )}
-
-        <BlogSeries id={userId} />
-
-    </div>)
+    );
 }
 
 export default UserProfilePage;

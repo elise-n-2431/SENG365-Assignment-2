@@ -53,58 +53,33 @@ const SignUp = ({ onLogin }: { onLogin?: () => void }) => {
     };
 
     return (
-        <div style={{ padding: 20, maxWidth: 400, alignSelf: 'center'}}>
+        <div className="form-page">
             <h1>Register</h1>
 
-            {errorFlag && <div style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</div>}
+            {errorFlag && <div className="form-error">{errorMessage}</div>}
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Email</label><br />
-                <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+            <div className="form-field">
+                <label>Email</label>
+                <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
-
-            <div style={{ marginBottom: 8 }}>
-                <label>Password</label><br />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+            <div className="form-field">
+                <label>Password</label>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
-            <div style={{ marginBottom: 8 }}>
-                <label>First Name</label><br />
-                <input
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirst(e.target.value)}
-                />
+            <div className="form-field">
+                <label>First Name</label>
+                <input type="text" value={firstName} onChange={(e) => setFirst(e.target.value)} />
             </div>
-            <div style={{ marginBottom: 8 }}>
-                <label>Last Name</label><br />
-                <input
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLast(e.target.value)}
-                />
+            <div className="form-field">
+                <label>Last Name</label>
+                <input type="text" value={lastName} onChange={(e) => setLast(e.target.value)} />
             </div>
-            <div style={{ marginBottom: 8 }}>
-                <label>Image (optional)</label><br />
-                <input
-                    type="file"
-                    accept="image/png, image/jpeg, image/gif"
-                    onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-                />
+            <div className="form-field">
+                <label>Image (optional)</label>
+                <input type="file" accept="image/png, image/jpeg, image/gif" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
             </div>
 
-            {/* Add image url handling */}
-
-            <Button variant="contained" style={{ margin: 8}} onClick={handleSignUp}>
-                Sign Up
-            </Button>
+            <Button variant="contained" onClick={handleSignUp}>Sign Up</Button>
         </div>
     );
 }

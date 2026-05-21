@@ -45,27 +45,23 @@ const BlogSeries = ({ id }: { id: number }) => {
         grouped.get(key)!.push(blog);
     }
 
-    // Sort each group newest to oldest (AC.2)
+    // Sort each group newest to oldest
     for (const group of grouped.values()) {
         group.sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
     }
 
-    // Sort series alphabetically, with 'No Series' always last (AC.2, AC.3)
+    // Sort series alphabetically, with 'No Series' always last
     const sortedKeys = [...grouped.keys()]
         .filter((k) => k !== 'No Series')
         .sort();
     if (grouped.has('No Series')) sortedKeys.push('No Series');
 
     return (
-        <div style={{ textAlign: 'center' }}>
+        <div className="blog-series-wrapper">
             {sortedKeys.map((seriesName) => (
-                <div key={seriesName} style={{ marginBottom: 24, display: 'inline-block', width: '80%' }}>
+                <div key={seriesName} className="blog-series-group">
                     <h3>{seriesName}</h3>
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
-                        gap: 16,
-                    }}>
+                    <div className="blog-series-grid">
                         {grouped.get(seriesName)!.map((blog) => (
                             <Link key={blog.blogId} to={`/blogs/${blog.blogId}`} style={{ textDecoration: 'none' }}>
                                 <BlogCard blog={blog} categories={categories} cities={cities} />

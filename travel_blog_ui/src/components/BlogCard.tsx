@@ -78,10 +78,8 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
     }, []);
 
     return (
-        <Card style={{ width: 300 }}>
+        <Card className="blog-card">
             <CardActionArea component={Link} to={`/blogs/${blog.blogId}`}>
-
-                {/* Blog image */}
                 {!imgError ? (
                     <CardMedia
                         component="img"
@@ -92,17 +90,13 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
                         style={{ objectFit: 'cover' }}
                     />
                 ) : (
-                    <div style={{ height: 160, background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="blog-card-no-image">
                         <Typography variant="body2" color="text.secondary">No image</Typography>
                     </div>
                 )}
-
                 <CardContent>
-                    {/* Title */}
                     <Typography variant="h6" gutterBottom>{blog.title}</Typography>
-
-                    {/* Creator row */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <div className="blog-card-creator-row">
                         <Avatar
                             src={avatarError ? undefined : creatorImageUrl}
                             alt={creatorName}
@@ -113,32 +107,25 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
                         </Avatar>
                         <Typography variant="body2" color="text.secondary">{creatorName}</Typography>
                     </div>
-
-                    {/* City & date */}
                     <Typography variant="body2" color="text.secondary" gutterBottom>
                         {cityName} · {formatDate(blog.creationDate)}
                     </Typography>
-
-                    {/* Categories */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 8 }}>
+                    <div className="blog-card-chips">
                         {blog.series && (
-                            <Chip key="series" label={blog.series} size="small" color="primary" />
+                            <Chip className="blog-card-series" key="series" label={blog.series} size="small" />
                         )}
                         {blog.categoryIds.map((id) => {
                             const name = categories.find((c) => c.categoryId === id)?.name ?? `Cat ${id}`;
                             return <Chip key={id} label={name} size="small" />;
                         })}
                     </div>
-
-                    {/* Reaction count */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <div className="blog-card-stats">
                         <EmojiEmotionsIcon fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">{blog.numReactions}</Typography>
                         <CommentIcon fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">{uniqueCommenters}</Typography>
                     </div>
                 </CardContent>
-
             </CardActionArea>
         </Card>
     );

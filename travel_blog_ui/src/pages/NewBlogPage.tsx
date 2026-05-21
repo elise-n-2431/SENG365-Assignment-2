@@ -80,88 +80,55 @@ const NewBlogPage = () => {
     };
 
     return (
-        <div style={{ padding: 20, maxWidth: 700, alignSelf: 'center' }}>
+        <div className="form-page-wide">
             <h1>Write a new blog</h1>
 
-            {errorMessage && <div style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</div>}
+            {errorMessage && <div className="form-error">{errorMessage}</div>}
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Title</label><br />
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    style={{ width: '100%' }}
-                />
+            <div className="form-field">
+                <label>Title</label>
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Description</label><br />
-                <textarea
-                    value={desc}
-                    rows={4}
-                    cols={40}
-                    onChange={(e) => setDesc(e.target.value)}
-                />
+            <div className="form-field">
+                <label>Description</label>
+                <textarea value={desc} rows={4} onChange={(e) => setDesc(e.target.value)} />
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Image (optional)</label><br />
-                <input
-                    type="file"
-                    accept="image/png, image/jpeg, image/gif"
-                    onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-                />
+            <div className="form-field">
+                <label>Image (optional)</label>
+                <input type="file" accept="image/png, image/jpeg, image/gif" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>City</label><br />
-                <select
-                    value={cityId}
-                    onChange={(e) => setCityId(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                >
+            <div className="form-field">
+                <label>City</label>
+                <select value={cityId} onChange={(e) => setCityId(Number(e.target.value))}>
                     <option value="">Select a city...</option>
                     {cityOptions.map((city) => (
-                        <option key={city.cityId} value={city.cityId}>
-                            {city.name}
-                        </option>
+                        <option key={city.cityId} value={city.cityId}>{city.name}</option>
                     ))}
                 </select>
             </div>
 
-            <div style={{ marginBottom: 8 }}>
+            <div className="form-field">
                 <label>Categories</label>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginTop: 4 }}>
+                <div className="form-categories-grid">
                     {categoryOptions.map((cat) => (
                         <FormControlLabel
                             key={cat.categoryId}
                             label={cat.name}
-                            control={
-                                <Checkbox
-                                    checked={selectedCategoryIds.includes(cat.categoryId)}
-                                    onChange={() => toggleCategory(cat.categoryId)}
-                                />
-                            }
+                            control={<Checkbox checked={selectedCategoryIds.includes(cat.categoryId)} onChange={() => toggleCategory(cat.categoryId)} />}
                         />
                     ))}
                 </div>
             </div>
 
-            <div style={{ marginBottom: 8}}>
-                <label>Series (optional)</label><br />
-                <input
-                    type="text"
-                    value={series}
-                    onChange={(e) => setSeries(e.target.value)}
-                    placeholder="e.g. Arts, Travel..."
-                    style={{ width: '100%' }}
-                />
+            <div className="form-field">
+                <label>Series (optional)</label>
+                <input type="text" value={series} onChange={(e) => setSeries(e.target.value)} placeholder="e.g. Arts, Travel..." />
             </div>
 
-            <Button variant="contained" style={{ margin: 8 }} onClick={handleNewBlog}>
-                Create Blog
-            </Button>
+            <Button variant="contained" onClick={handleNewBlog}>Create Blog</Button>
         </div>
     );
 };

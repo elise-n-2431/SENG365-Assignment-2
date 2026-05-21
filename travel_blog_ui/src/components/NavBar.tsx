@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Typography, Avatar } from '@mui/material';
+import { Button, Avatar } from '@mui/material';
 import { ConfirmDialog } from "./PopUp.tsx";
 import useAuthStore from '../store/authStore.ts';
 
@@ -30,23 +30,20 @@ const NavBar = () => {
     };
 
     return (
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '8px 16px', borderBottom: '1px solid #ccc' }}>
+        <nav>
+            <Link to="/">HOME</Link>
 
-            <Link to="/">Home</Link>
-
-            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 20 }}>
+            <div className="nav-right">
                 {isLoggedIn() ? (
                     <>
-                        <Link to="/my-blogs" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-                            <Typography variant="body2">My Blogs</Typography>
-                        </Link>
+                        <Link to="/my-blogs" className="nav-link">MY BLOGS</Link>
 
                         <Link to={`/users/${userId}`} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-                            <Typography variant="body2">My Profile</Typography>
+                            <span className="nav-link">MY PROFILE</span>
                             <Avatar
                                 src={avatarError ? undefined : userImageUrl}
                                 alt={userName}
-                                style={{ width: 32, height: 32, fontSize: 14 }}
+                                style={{ width: 32, height: 32, fontSize: 14, marginRight: 20}}
                                 onError={() => setAvatarError(true)}
                             >
                                 {userName[0]}
@@ -62,13 +59,12 @@ const NavBar = () => {
                             onCancel={() => setDialogOpen(false)}
                         />
 
-                        <button onClick={() => setDialogOpen(true)}>Log out</button>
+                        <Button variant="contained" className="nav-logout" onClick={() => setDialogOpen(true)}>Log out</Button>
                     </>
                 ) : (
                     <Link to="/login">Log in</Link>
                 )}
             </div>
-
         </nav>
     );
 };

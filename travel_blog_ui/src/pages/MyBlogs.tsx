@@ -77,15 +77,9 @@ const MyBlogsPage = () => {
     }
 
     return (
-        <div style={{ textAlign: 'center', marginTop: 32, marginBottom: 30 }}>
+        <div className="my-blogs-wrapper">
             <h3>Blogs</h3>
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: 16,
-                width: '90%',
-                margin: '0 auto',
-            }}>
+            <div className="my-blogs-grid">
                 {blogs.map((b) => (
                     <Link key={b.blogId} to={`/blogs/${b.blogId}`} style={{ textDecoration: 'none' }}>
                         <BlogCard blog={b} categories={categories} cities={cities} />

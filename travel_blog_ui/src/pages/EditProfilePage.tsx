@@ -76,62 +76,46 @@ const EditProfilePage = ({ onProfileUpdate }: { onProfileUpdate?: () => void }) 
     };
 
     return (
-        <div style={{ padding: 20, maxWidth: 400 }}>
+        <div className="form-page">
             <h1>Edit Profile</h1>
 
-            {errorFlag && <div style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</div>}
+            {errorFlag && <div className="form-error">{errorMessage}</div>}
 
-            <div style={{ marginBottom: 8 }}>
-                <label>First Name</label><br />
+            <div className="form-field">
+                <label>First Name</label>
                 <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             </div>
-            <div style={{ marginBottom: 8 }}>
-                <label>Last Name</label><br />
+            <div className="form-field">
+                <label>Last Name</label>
                 <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
             </div>
-            <div style={{ marginBottom: 8 }}>
-                <label>Email</label><br />
+            <div className="form-field">
+                <label>Email</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Profile Image</label><br />
-
-                {previewUrl && (
-                    <img
-                        src={previewUrl}
-                        alt="Profile preview"
-                        style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: '50%', display: 'block', marginBottom: 8 }}
-                    />
-                )}
-                {!previewUrl && (
-                    <div style={{ width: 100, height: 100, borderRadius: '50%', background: '#ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
-                        No image
-                    </div>
-                )}
-
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/png, image/jpeg, image/gif"
-                    style={{ display: 'none' }}
-                    onChange={(e) => {
-                        setImageFile(e.target.files?.[0] ?? null);
-                        setRemoveImage(false);
-                    }}
-                />
-                <Button variant="outlined" size="small" onClick={() => fileInputRef.current?.click()} style={{ marginRight: 8 }}>
-                    {currentImageUrl || imageFile ? 'Change Image' : 'Upload Image'}
-                </Button>
-                {(currentImageUrl || imageFile) && (
-                    <Button variant="outlined" size="small" color="error" onClick={() => {
-                        setImageFile(null);
-                        setRemoveImage(true);
-                        if (fileInputRef.current) fileInputRef.current.value = '';
-                    }}>
-                        Remove Image
+            <div className="form-field">
+                <label>Profile Image</label>
+                {previewUrl
+                    ? <img src={previewUrl} alt="Profile preview" className="form-image-preview" />
+                    : <div className="form-image-placeholder">No image</div>
+                }
+                <input ref={fileInputRef} type="file" accept="image/png, image/jpeg, image/gif" style={{ display: 'none' }}
+                       onChange={(e) => { setImageFile(e.target.files?.[0] ?? null); setRemoveImage(false); }} />
+                <div className="form-actions">
+                    <Button variant="outlined" size="small" onClick={() => fileInputRef.current?.click()}>
+                        {currentImageUrl || imageFile ? 'Change Image' : 'Upload Image'}
                     </Button>
-                )}
+                    {(currentImageUrl || imageFile) && (
+                        <Button variant="outlined" size="small" color="error" onClick={() => {
+                            setImageFile(null);
+                            setRemoveImage(true);
+                            if (fileInputRef.current) fileInputRef.current.value = '';
+                        }}>
+                            Remove Image
+                        </Button>
+                    )}
+                </div>
             </div>
 
             <Button variant="contained" onClick={handleSave}>Save</Button>

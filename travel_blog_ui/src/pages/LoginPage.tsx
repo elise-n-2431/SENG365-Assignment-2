@@ -40,34 +40,23 @@ const LoginPage = ({ onLogin }: { onLogin?: () => void }) => {
     }
 
     return (
-        <div style={{ padding: 20, maxWidth: 400, alignSelf: 'center'}}>
+        <div className="form-page">
             <h1>Log in</h1>
 
-            {errorFlag && <div style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</div>}
+            {errorFlag && <div className="form-error">{errorMessage}</div>}
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Email</label><br />
-                <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+            <div className="form-field">
+                <label>Email</label>
+                <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
-
-            <div style={{ marginBottom: 8 }}>
-                <label>Password</label><br />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+            <div className="form-field">
+                <label>Password</label>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
-            <Button variant="contained" style={{ margin: 8}} onClick={handleLogin}>
-                Login
-            </Button>
-            <Button variant="contained" style={{ margin: 8}} onClick={handleSignUp}>
-                Sign Up
-            </Button>
+            <div className="form-actions">
+                <Button variant="contained" onClick={handleLogin}>Login</Button>
+                <Button variant="contained" onClick={handleSignUp}>Sign Up</Button>
+            </div>
         </div>
     );
 

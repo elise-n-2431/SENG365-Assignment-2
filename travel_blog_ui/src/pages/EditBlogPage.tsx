@@ -106,70 +106,53 @@ const EditBlogPage = () => {
     };
 
     return (
-        <div style={{ padding: 20, maxWidth: 700, alignSelf: 'center' }}>
+        <div className="form-page-wide">
             <h1>Edit Blog</h1>
 
-            {errorMessage && <div style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</div>}
+            {errorMessage && <div className="form-error">{errorMessage}</div>}
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Title</label><br />
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    style={{ width: '100%' }}
-                />
+            <div className="form-field">
+                <label>Title</label>
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Description</label><br />
-                <textarea
-                    value={desc}
-                    rows={4}
-                    cols={40}
-                    onChange={(e) => setDesc(e.target.value)}
-                />
+            <div className="form-field">
+                <label>Description</label>
+                <textarea value={desc} rows={4} onChange={(e) => setDesc(e.target.value)} />
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Blog Image</label><br />
-
+            <div className="form-field">
+                <label>Blog Image</label>
                 {previewUrl
-                    ? <img src={previewUrl} alt="Blog preview" style={{ width: 120, height: 80, objectFit: 'cover', display: 'block', marginBottom: 8 }} />
-                    : <div style={{ width: 120, height: 80, background: '#ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>No image</div>
+                    ? <img src={previewUrl} alt="Blog preview" className="form-image-preview-rect" />
+                    : <div className="form-image-placeholder" style={{ borderRadius: 4 }}>No image</div>
                 }
-
                 <input
                     ref={fileInputRef}
                     type="file"
                     accept="image/png, image/jpeg, image/gif"
                     style={{ display: 'none' }}
-                    onChange={(e) => {
-                        setImageFile(e.target.files?.[0] ?? null);
-                        setRemoveImage(false);
-                    }}
+                    onChange={(e) => { setImageFile(e.target.files?.[0] ?? null); setRemoveImage(false); }}
                 />
-                <Button variant="outlined" size="small" onClick={() => fileInputRef.current?.click()} style={{ marginRight: 8 }}>
-                    {currentImageUrl || imageFile ? 'Change Image' : 'Upload Image'}
-                </Button>
-                {(currentImageUrl || imageFile) && (
-                    <Button variant="outlined" size="small" color="error" onClick={() => {
-                        setImageFile(null);
-                        setRemoveImage(true);
-                        if (fileInputRef.current) fileInputRef.current.value = '';
-                    }}>
-                        Remove Image
+                <div className="form-actions">
+                    <Button variant="outlined" size="small" onClick={() => fileInputRef.current?.click()}>
+                        {currentImageUrl || imageFile ? 'Change Image' : 'Upload Image'}
                     </Button>
-                )}
+                    {(currentImageUrl || imageFile) && (
+                        <Button variant="outlined" size="small" color="error" onClick={() => {
+                            setImageFile(null);
+                            setRemoveImage(true);
+                            if (fileInputRef.current) fileInputRef.current.value = '';
+                        }}>
+                            Remove Image
+                        </Button>
+                    )}
+                </div>
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>City</label><br />
-                <select
-                    value={cityId}
-                    onChange={(e) => setCityId(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                >
+            <div className="form-field">
+                <label>City</label>
+                <select value={cityId} onChange={(e) => setCityId(Number(e.target.value))}>
                     <option value="">Select a city...</option>
                     {cityOptions.map((city) => (
                         <option key={city.cityId} value={city.cityId}>{city.name}</option>
@@ -177,9 +160,9 @@ const EditBlogPage = () => {
                 </select>
             </div>
 
-            <div style={{ marginBottom: 8 }}>
+            <div className="form-field">
                 <label>Categories</label>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginTop: 4 }}>
+                <div className="form-categories-grid">
                     {categoryOptions.map((cat) => (
                         <FormControlLabel
                             key={cat.categoryId}
@@ -195,24 +178,21 @@ const EditBlogPage = () => {
                 </div>
             </div>
 
-            <div style={{ marginBottom: 8 }}>
-                <label>Series {hasSeries ? '(cannot be changed once set)' : '(optional)'}</label><br />
+            <div className="form-field">
+                <label>Series {hasSeries ? '(cannot be changed once set)' : '(optional)'}</label>
                 <input
                     type="text"
                     value={series}
                     onChange={(e) => setSeries(e.target.value)}
                     placeholder="e.g. Arts, Travel..."
-                    style={{ width: '100%' }}
                     disabled={hasSeries}
                 />
             </div>
 
-            <Button variant="contained" style={{ margin: 8 }} onClick={handleSave}>
-                Save Changes
-            </Button>
-            <Button variant="outlined" style={{ margin: 8 }} onClick={() => navigate(`/blogs/${id}`)}>
-                Cancel
-            </Button>
+            <div className="form-actions">
+                <Button variant="contained" onClick={handleSave}>Save Changes</Button>
+                <Button variant="outlined" onClick={() => navigate(`/blogs/${id}`)}>Cancel</Button>
+            </div>
         </div>
     );
 };

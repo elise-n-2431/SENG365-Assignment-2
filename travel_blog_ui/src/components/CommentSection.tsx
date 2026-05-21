@@ -80,32 +80,16 @@ const CommentSection = ({ blogId, userId }: { blogId: number, userId: number | n
     }
 
     return (
-        <div>
-            {/* Top-level comment input */}
+        <div id="comments">
             {canComment ? (
-                <div style={{ marginBottom: 16 }}>
-                    <TextField
-                        fullWidth
-                        multiline
-                        rows={2}
-                        size="small"
-                        placeholder="Leave a comment..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                    />
-                    <Button
-                        variant="contained"
-                        size="small"
-                        style={{ marginTop: 4 }}
-                        onClick={handlePostComment}
-                    >
-                        Post Comment
-                    </Button>
+                <div className="comment-input">
+                    <TextField fullWidth multiline rows={2} size="small" placeholder="Leave a comment..." value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+                    <Button variant="contained" size="small" onClick={handlePostComment}>Post Comment</Button>
                 </div>
             ) : isBlogCreator ? (
-                <div style={{ marginBottom: 16, color: 'grey' }}>You cannot comment on your own blog.</div>
+                <p className="comment-notice">You cannot comment on your own blog.</p>
             ) : (
-                <div style={{ marginBottom: 16, color: 'grey' }}>Log in to leave a comment.</div>
+                <p className="comment-notice">Log in to leave a comment.</p>
             )}
 
             {!comments.length && <div>No comments yet.</div>}
@@ -113,58 +97,28 @@ const CommentSection = ({ blogId, userId }: { blogId: number, userId: number | n
             {topLevel.map((parent) => {
                 const replies = grouped.get(parent.commentId) ?? [];
                 const isReplying = replyingTo === parent.commentId;
-
                 return (
-                    <div key={parent.commentId} style={{ marginBottom: 12 }}>
+                    <div key={parent.commentId} className="comment-thread">
                         <CommentCard comment={parent} replyCount={replies.length} />
-
-                        {/* Replies */}
-                        {replies.map((reply) => (
-                            <div key={reply.commentId} style={{ marginLeft: 32 }}>
-                                <CommentCard comment={reply} />
-                            </div>
-                        ))}
-
-                        {/* Reply toggle */}
+                        <div className="comment-replies">
+                            {replies.map((reply) => (
+                                <CommentCard key={reply.commentId} comment={reply} />
+                            ))}
+                        </div>
                         {canComment && (
-                            <div style={{ marginLeft: 32, marginTop: 4 }}>
+                            <div className="comment-reply-input">
                                 {!isReplying ? (
-                                    <Button
-                                        size="small"
-                                        onClick={() => {
-                                            setReplyingTo(parent.commentId);
-                                            setReplyText('');
-                                        }}
-                                    >
+                                    <Button className="reply_button" size="small" onClick={() => { setReplyingTo(parent.commentId); setReplyText(''); }}>
                                         Reply
                                     </Button>
                                 ) : (
-                                    <div>
-                                        <TextField
-                                            fullWidth
-                                            multiline
-                                            rows={2}
-                                            size="small"
-                                            placeholder={`Replying to ${parent.commenterFirstName}...`}
-                                            value={replyText}
-                                            onChange={(e) => setReplyText(e.target.value)}
-                                        />
-                                        <Button
-                                            variant="contained"
-                                            size="small"
-                                            style={{ marginTop: 4, marginRight: 4 }}
-                                            onClick={() => handlePostReply(parent.commentId)}
-                                        >
-                                            Post Reply
-                                        </Button>
-                                        <Button
-                                            size="small"
-                                            style={{ marginTop: 4 }}
-                                            onClick={() => setReplyingTo(null)}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </div>
+                                    <>
+                                        <TextField fullWidth multiline rows={2} size="small" placeholder={`Replying to ${parent.commenterFirstName}...`} value={replyText} onChange={(e) => setReplyText(e.target.value)} />
+                                        <div className="comment-reply-actions">
+                                            <Button variant="contained" size="small" onClick={() => handlePostReply(parent.commentId)}>Post Reply</Button>
+                                            <Button size="small" onClick={() => setReplyingTo(null)}>Cancel</Button>
+                                        </div>
+                                    </>
                                 )}
                             </div>
                         )}
