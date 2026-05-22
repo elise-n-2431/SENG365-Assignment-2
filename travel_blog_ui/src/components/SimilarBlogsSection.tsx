@@ -70,7 +70,6 @@ const SimilarBlogs = ({ blog }: { blog: Blog }) => {
 
     return (
         <div className="similar-blogs-wrapper">
-            <h3>Similar Blogs</h3>
             <div className="similar-blogs-grid">
                 {blogs.map((b) => (
                     <Link key={b.blogId} to={`/blogs/${b.blogId}`} style={{ textDecoration: 'none' }}>

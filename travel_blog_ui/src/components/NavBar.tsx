@@ -62,7 +62,7 @@ const NavBar = () => {
                         <Button variant="contained" className="nav-logout" onClick={() => setDialogOpen(true)}>Log out</Button>
                     </>
                 ) : (
-                    <Link to="/login">Log in</Link>
+                    <Link to="/login">LOG IN</Link>
                 )}
             </div>
         </nav>

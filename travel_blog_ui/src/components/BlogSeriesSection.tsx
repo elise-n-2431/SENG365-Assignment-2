@@ -26,6 +26,7 @@ const BlogSeries = ({ id }: { id: number }) => {
     const [cities, setCities] = React.useState<City[]>([]);
     const [errorFlag, setErrorFlag] = React.useState(false);
 
+
     React.useEffect(() => {
         axios.get(`${API_BASE}/blogs`, { params: { creatorId: id } })
             .then((res) => setBlogs(res.data.blogs))
@@ -37,7 +38,6 @@ const BlogSeries = ({ id }: { id: number }) => {
     if (errorFlag) return <div>Failed to load blogs.</div>;
     if (!blogs.length) return <div>No blogs yet.</div>;
 
-    // Group blogs by series name, null series goes into 'No Series'
     const grouped = new Map<string, Blog[]>();
     for (const blog of blogs) {
         const key = blog.series ?? 'No Series';
@@ -45,12 +45,10 @@ const BlogSeries = ({ id }: { id: number }) => {
         grouped.get(key)!.push(blog);
     }
 
-    // Sort each group newest to oldest
     for (const group of grouped.values()) {
         group.sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
     }
 
-    // Sort series alphabetically, with 'No Series' always last
     const sortedKeys = [...grouped.keys()]
         .filter((k) => k !== 'No Series')
         .sort();

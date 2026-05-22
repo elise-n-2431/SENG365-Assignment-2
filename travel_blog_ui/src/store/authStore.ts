@@ -8,6 +8,8 @@ interface AuthState {
 
     login: (token: string, userId: number, firstName: string, lastName: string) => void;
     logout: () => void;
+    update: (firstName: string, lastName: string) => void;
+
     isLoggedIn: () => boolean;
 }
 
@@ -33,7 +35,14 @@ const useAuthStore = create<AuthState>((set, get) => ({
         set({ token: null, userId: null, firstName: null, lastName: null });
     },
 
+    update: (firstName: string, lastName: string) => {
+        localStorage.setItem('firstName', firstName);
+        localStorage.setItem('lastName', lastName);
+        set({ firstName, lastName });
+    },
+
     isLoggedIn: () => get().token !== null,
+
 }));
 
 export default useAuthStore;

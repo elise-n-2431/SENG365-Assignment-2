@@ -10,6 +10,7 @@ interface BlogCardProps {
     blog: Blog;
     categories: Category[];
     cities: City[];
+    relation?: string | null | undefined;
 }
 
 interface Category {
@@ -54,7 +55,7 @@ const formatDate = (dateStr: string) =>
         timeZone: 'Pacific/Auckland',
     });
 
-const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
+const BlogCard = ({ blog, categories, cities , relation}: BlogCardProps) => {
     const cityName = cities.find((c) => c.cityId === blog.cityId)?.name ?? `City ${blog.cityId}`;
 
     const [imgError, setImgError] = React.useState(false);
@@ -111,8 +112,11 @@ const BlogCard = ({ blog, categories, cities }: BlogCardProps) => {
                         {cityName} · {formatDate(blog.creationDate)}
                     </Typography>
                     <div className="blog-card-chips">
+                        {relation && (
+                            <Chip className="blog-card-relation" key="chip-relation" label={relation} size="small" />
+                        )}
                         {blog.series && (
-                            <Chip className="blog-card-series" key="series" label={blog.series} size="small" />
+                            <Chip className="blog-card-series" key="chip-series" label={blog.series} size="small" />
                         )}
                         {blog.categoryIds.map((id) => {
                             const name = categories.find((c) => c.categoryId === id)?.name ?? `Cat ${id}`;

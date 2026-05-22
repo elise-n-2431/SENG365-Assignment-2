@@ -1,219 +1,1024 @@
+/* ============================================================
+   VARIABLES & GLOBAL BASE
+   ============================================================ */
+
+
+
+/*.rubik-text {*/
+/*            font-family: "Rubik", sans-serif;*/
+/*            font-optical-sizing: auto;*/
+/*            font-weight: 600;*/
+/*            font-style: normal;*/
+/*        }*/
 
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+    --primary: #6f325d;
+    --primary-variant: #4d2241;
+    --secondary: #6c95b9;
+    --secondary-variant: #4a7a9b;
+    --accent-1: #1e4976;
+    --accent-2: #c9a84c;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+    --background: #ffffff;
+    --surface: #ffffff;
+    --surface-variant: #e7f1f6;
+    --brown-light: #c4956a;
+    --brown-mid: #8b5e3c;
+    --brown-dark: #4a2e1a;
+    --cream: #fdf6ee;
+    --cream-dark: #ede0cc;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    --error: #b00020;
 
-  @media (max-width: 1400px) {
-    font-size: 16px;
-  }
+    --on-primary: #ffffff;
+    --on-secondary: #ffffff;
+    --on-background: #1a0d10;
+    --on-surface: #2a1a0e;
+    --on-error: #ffffff;
+
+    --text: #000000;
+    --text-h: #1a0d10;
+    --bg: var(--background);
+    --border: #ddd0d8;          /* soft purple-grey border */
+    --heading: "Libre Baskerville", serif;
+    --sans: "Rubik", sans-serif;
+    --mono: "Rubik", sans-serif;
+    --code-bg: var(--surface);
+    --accent: var(--primary);
+    --accent-bg: rgba(111, 50, 93, 0.08);
+
+    font: 18px/145% var(--sans);
+    letter-spacing: 0.18px;
+    color-scheme: light dark;
+    color: var(--text);
+    background: var(--background);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    @media (max-width: 1400px) {
+        font-size: 16px;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+    :root {
+        --primary: #b07aa0;
+        --primary-variant: #7a4d6e;
+        --secondary: #6c95b9;
+        --secondary-variant: #4a7a9b;
+        --accent-1: #2a4a6b;
+        --accent-2: #c9a84c;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
+        --background: #121212;
+        --surface: #1e1e1e;
+        --surface-variant: #2a2a2a;
 
-#root {
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+        --error: #cf6679;
 
-#layout {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100svh;
-}
+        --on-primary: #ffffff;
+        --on-secondary: #000000;
+        --on-background: #e8e8e8;
+        --on-surface: #e0e0e0;
+        --on-error: #000000;
 
-#sidebar {
-  width: 220px;
-  flex-shrink: 0;
-  position: sticky;
-  top: 0;
-  max-height: 100svh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 24px 16px;
-  border: none;
-  box-shadow: none;
-  box-sizing: border-box;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
+        --text: #b0a0b0;        /* muted purple-grey */
+        --text-h: #f0f0f0;
+        --bg: var(--background);
+        --border: #2e2e2e;
+        --code-bg: var(--surface);
+        --accent: var(--primary);
+        --accent-bg: rgba(176, 122, 160, 0.12);
+    }
 }
 
 body {
-  margin: 0;
+    margin: 0;
+    background: var(--background);
+    color: var(--on-background);
+    font-family: var(--sans);
+    font-optical-sizing: auto;
+    font-weight: 400;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+label {
+    margin: 0;
+    background: var(--background);
+    color: var(--on-background);
+    font-family: var(--sans);
+    font-optical-sizing: auto;
+    font-weight: 400;
+}
+
+.MuiTypography-root {
+    font-family: var(--sans) !important;
+}
+.MuiTypography-h6,
+.MuiTypography-h5,
+.MuiTypography-h4 {
+    color: var(--heading);
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.2s;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+#root {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    border-inline: 1px solid var(--border);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: var(--background);
+    font-family: var(--sans);
+    font-weight: 400;
+}
+
+h1, h2{
+    font-family: var(--heading);
+    font-weight: 500;
+    color: var(--text-h);
+}
+
+h3, h4, h5, h6 {
+    font-family: var(--sans);
+    color: var(--text-h);
+    margin: 20px;
+    background: var(--background);
+    font-size: 25px;
+    font-weight: 400;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+    font-size: 50px;
+    letter-spacing: -1.68px;
+    margin: 32px 0;
+
+    @media (max-width: 1024px) {
+        font-size: 36px;
+        margin: 20px 0;
+    }
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+h2 {
+    font-size: 24px;
+    line-height: 118%;
+    letter-spacing: -0.24px;
+    margin: 0 0 8px;
+
+    @media (max-width: 1024px) {
+        font-size: 20px;
+    }
+}
+
+p {
+    margin: 0;
+}
+
+code, .counter {
+    font-family: var(--mono);
+    display: inline-flex;
+    border-radius: 4px;
+    color: var(--text-h);
 }
 
 code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+    font-size: 15px;
+    line-height: 135%;
+    padding: 4px 8px;
+    background: var(--code-bg);
 }
 
-/* COMMENTS */
+/* ============================================================
+   NAVBAR  (NavBar.tsx)
+   ============================================================ */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    font-family: var(--sans);
+    font-size:10px;
+    height: 60px;
+}
+
+nav a,
+nav p {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.2s;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+nav .nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;        /* wraps on small screens */
+    justify-content: flex-end;
+}
+
+.nav-logout {
+    font-family: var(--sans) !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    font-weight: 400 !important;
+}
+
+.nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 16px;
+    font-family: var(--sans);
+    text-transform: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+/* ============================================================
+   LAYOUT  (BlogsPage.tsx)
+   ============================================================ */
+#layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100svh;
+}
+
+.blogs-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 250px;
+    padding: 20px;
+}
+
+.blogs-search-bar {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.blogs-list-wrapper {
+    width: 100%;
+    max-width: 932px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.blogs-empty {
+    color: var(--text);
+    font-size: 14px;
+}
+
+.blogs-pagination {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+
+}
+
+.blogs-pagination span {
+    margin: 0 8px;
+    font-size: 14px;
+    color: var(--text);
+}
+
+/* ============================================================
+   SIDEBAR  (SideBar.tsx)
+   ============================================================ */
+#sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--navbar-height); /* stick below the navbar */
+    height: calc(100svh - var(--navbar-height)); /* full height minus navbar */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 8px 16px 16px;
+    border: none;
+    border-right: 1px solid var(--border);
+    box-sizing: border-box;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--sans);
+}
+
+.sidebar-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.sidebar-checkbox-list {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
+}
+/* ============================================================
+   BLOG CARD  (BlogCard.tsx)
+   ============================================================ */
+.blog-card {
+    width: 300px;
+    background: var(--surface) !important;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 12px; !important
+}
+
+.blog-card-no-image {
+    height: 160px;
+    background: var(--surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.blog-card-creator-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.blog-card-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 8px;
+}
+
+.MuiChip-root {
+    font-family: var(--sans) !important;
+}
+
+.blog-card-stats {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.blog-card-series {
+    background-color: var(--secondary) !important;
+    color: var(--on-secondary) !important;
+}
+
+.blog-card-relation {
+    background-color: var(--accent-2) !important;
+    color: var(--on-secondary) !important;
+}
+
+.blog-card h6 {
+    text-wrap: wrap;
+}
+
+/* ============================================================
+   BLOG DETAIL PAGE  (BlogDetailPage.tsx)
+   ============================================================ */
+.blog-detail {
+    width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: left;
+}
+.blog-detail h6 {
+    margin: 20px 0;
+    font-size: 40px;
+}
+
+.blog-detail p {
+    margin: 10px 0;
+}
+
+/* Wrapper to hold image + content side by side */
+.blog-detail-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.blog-detail-image {
+    width: 350px;
+    flex-shrink: 0;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0; /* remove bottom margin since it's now inline */
+}
+
+.blog-detail-no-image {
+    width: 350px;
+    flex-shrink: 0;
+    height: 250px;
+    background: var(--surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    margin-bottom: 0;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.blog-detail-content {
+    flex: 1; /* takes up remaining space */
+    min-width: 0; /* prevents flex overflow */
+}
+
+.blog-detail-creator-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: inherit;
+    margin: 8px 0;
+}
+
+.blog-detail-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 30px 0;
+}
+.blog-detail-series {
+    background-color: var(--secondary) !important;
+    color: var(--on-secondary) !important;
+}
+
+.blog-detail-reactions {
+    display: flex;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.blog-detail-actions {
+    display: flex;
+    gap: 8px;
+    margin: 20px;
+}
+
+/* ============================================================
+   BLOG SERIES SECTION  (BlogSeriesSection.tsx)
+   ============================================================ */
+.blog-series-wrapper {
+    text-align: center;
+}
+
+.blog-series-group {
+    margin-bottom: 24px;
+    display: inline-block;
+    width: 80%;
+}
+
+.blog-series-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 900px) {
+    .blog-series-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ============================================================
+   SIMILAR BLOGS  (SimilarBlogsSection.tsx)
+   ============================================================ */
+.similar-blogs-wrapper {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 30px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+}
+
+.similar-blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+    .similar-blogs-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ============================================================
+   MY BLOGS PAGE  (MyBlogs.tsx)
+   ============================================================ */
+.my-blogs-wrapper {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.my-blogs-wrapper h1 {
+    margin-bottom:50px;
+}
+
+.my-blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+    .my-blogs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ============================================================
+   USER PROFILE PAGE  (UserProfilePage.tsx)
+   ============================================================ */
+.profile-page {
+    padding: 20px;
+    background: var(--background);
+}
+
+.profile-avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar-wrapper .MuiAvatar-root {
+    width: 300px;
+    height: 300px;
+    fontSize: 14;
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.profile-email {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+/* ============================================================
+   FORMS — shared by Login, SignUp, EditProfile, NewBlog, EditBlog
+   ============================================================ */
+
+.form-page {
+    padding: 32px;
+    width: 500px;
+    background: var(--surface);
+    border-radius: 12px;
+    margin: 40px auto;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-page-wide {
+    padding: 32px;
+    width: 720px;
+    background: var(--surface);
+    border-radius: 12px;
+    margin: 40px auto;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-page h1,
+.form-page-wide h1 {
+    margin: 0 0 30px 0;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+}
+
+/* ── Error banner ───────────────────────────────────────────── */
+
+.form-error {
+    color: var(--error);
+    background: color-mix(in srgb, var(--error) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--error) 30%, transparent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+/* ── Field wrapper ──────────────────────────────────────────── */
+
+.form-field {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Native labels (used on file inputs, image sections) */
+.form-field > label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+/* ── Native inputs (file, plain text, textarea, select) ─────── */
+/* Only targets truly native elements — MUI components are excluded */
+
+.form-field > input[type="file"] {
+    display: block;
+    font-size: 13px;
+    color: var(--text);
+    margin-top: 4px;
+}
+
+.form-field input:not([class*="Mui"]),
+.form-field textarea:not([class*="Mui"]),
+.form-field select:not([class*="Mui"]) {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--background);
+    color: var(--on-background);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-field input:not([class*="Mui"]):focus,
+.form-field textarea:not([class*="Mui"]):focus,
+.form-field select:not([class*="Mui"]):focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.form-field input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--surface-variant);
+}
+
+/* ── MUI TextField overrides ────────────────────────────────── */
+/* Let MUI control its own sizing — only theme colours and spacing */
+
+.form-field .MuiTextField-root,
+.form-field .MuiFormControl-root {
+    width: 100%;
+}
+
+.form-field .MuiInputBase-root {
+    background: var(--background);
+    font-size: 14px;
+    font-family: var(--sans);
+    border-radius: 6px;
+}
+
+.form-field .MuiOutlinedInput-notchedOutline {
+    border-color: var(--border);
+}
+
+.form-field .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: var(--primary);
+}
+
+.form-field .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.form-field .MuiInputLabel-root {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--text);
+}
+
+.form-field .MuiInputBase-input {
+    color: var(--on-background);
+    font-family: var(--sans);
+}
+
+.form-field .MuiFormHelperText-root {
+    font-size: 12px;
+    margin-top: 4px;
+    margin-left: 0;
+}
+
+.form-field .MuiFormLabel-root {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    font-family: var(--sans);
+    margin-bottom: 6px;
+}
+
+/* ── Categories grid ────────────────────────────────────────── */
+
+.form-categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 6px;
+}
+
+.form-categories-grid .MuiFormControlLabel-label {
+    font-size: 13px;
+    font-family: var(--sans);
+    color: var(--text);
+}
+
+.form-categories-grid.MuiFormGroup-root {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+}
+
+/* ── Image previews ─────────────────────────────────────────── */
+
+.form-image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin-bottom: 10px;
+    border: 2px solid var(--border);
+}
+
+.form-image-preview-rect {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+}
+
+.form-image-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--text);
+    border: 2px dashed var(--border);
+}
+
+
+/* ── Actions row ────────────────────────────────────────────── */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   COMMENTS  (CommentSection.tsx + CommentCard.tsx)
+   ============================================================ */
 #comments {
-  margin-top: 32px;
+    margin-top: 32px;
+    margin-bottom: 20px;
+    text-align: left;
+    width: 60%;
+    align-self: center;
 }
 
-#comments .comment-input {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+.comment-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
-#comments .comment-notice {
-  margin-bottom: 16px;
-  color: var(--text);
-  font-size: 14px;
+.comment-notice {
+    margin-bottom: 16px;
+
 }
 
-#comments .comment-thread {
-  margin-bottom: 12px;
+.comment-stats {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--text);
 }
 
-#comments .comment-replies {
-  margin-left: 32px;
+.comment-thread {
+    margin-bottom: 12px;
 }
 
-#comments .comment-reply-input {
-  margin-left: 32px;
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.comment-replies {
+    margin-left: 32px;
 }
 
-#comments .comment-reply-actions {
-  display: flex;
-  gap: 4px;
+.comment-reply-input {
+    margin-left: 32px;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-/* CommentCard */
-#comments .comment-card {
-  margin-bottom: 8px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 16px;
-  background: var(--bg);
+.comment-reply-actions {
+    display: flex;
+    gap: 4px;
 }
 
-#comments .comment-card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+.comment-card {
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    background: var(--surface);
 }
 
-#comments .comment-card-meta {
-  display: flex;
-  flex-direction: column;
+.comment-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
 }
 
-#comments .comment-card-name {
-  font-size: 14px;
-  color: var(--text);
+.comment-card-meta {
+    display: flex;
+    flex-direction: column;
 }
 
-#comments .comment-card-date {
-  font-size: 12px;
-  color: var(--text);
-  opacity: 0.7;
+.comment-card-name {
+    font-size: 14px;
+    color: var(--text);
 }
 
-#comments .comment-card-body {
-  font-size: 14px;
-  color: var(--text);
+.comment-card-date {
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.7;
 }
 
-#comments .comment-card-reply-count {
-  display: block;
-  margin-top: 4px;
-  font-size: 12px;
-  color: var(--text);
-  opacity: 0.7;
+.comment-card-body {
+    font-size: 14px;
+    color: var(--on-surface);
+}
+
+.comment-card-reply-count {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+/* ============================================================
+   NOT FOUND  (NotFound.tsx)
+   ============================================================ */
+.not-found {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    color: var(--text);
+}
+
+/* ============================================================
+   BUTTON COLOUR OVERRIDE
+   ============================================================ */
+.MuiButtonBase-root {
+    font-family: var(--sans) !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+.MuiButton-contained {
+    background-color: var(--primary) !important;
+    color: var(--on-primary) !important;
+    text-transform: uppercase;
+}
+
+.MuiButton-contained:hover {
+    background-color: var(--primary-variant) !important;
+    text-transform: uppercase;
+
+}
+
+.MuiButton-text {
+    color: var(--primary) !important;
+}
+
+.MuiButton-text:hover {
+    background-color: var(--accent-bg) !important;
+    color: var(--primary-variant) !important;
+}
+
+.MuiButton-containedError {
+    background-color: var(--error) !important;
+    color: var(--on-error) !important;
+    text-transform: uppercase;
+
+}
+
+.MuiButton-containedError:hover {
+    background-color: var(--error) !important;
+    filter: brightness(0.9);
+    text-transform: uppercase;
+
+}
+
+.MuiButton-outlined {
+    background-color: var(--surface) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--border) !important;
+    text-transform: uppercase;
+}
+
+.MuiButton-outlined:hover {
+    background-color: var(--surface-variant) !important;
+    border: 1px solid var(--border) !important;
+}
+
+.MuiButton-outlined.Mui-selected,
+.MuiButton-outlined:active {
+    background-color: var(--primary) !important;
+    color: var(--on-primary) !important;
+    border: 1px solid var(--primary) !important;
+}
+
+.btn-secondary {
+    background-color: var(--secondary) !important;
+    color: var(--on-secondary) !important;
+    text-transform: uppercase;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-variant) !important;
+    color: var(--on-secondary) !important;
+}
+
+.MuiCheckbox-root svg,
+.MuiCheckbox-root.Mui-checked svg {
+    color: var(--accent-1);
+}
+
+
+
+
+
+
+
+span {
+    font-family: var(--sans) !important;
 }

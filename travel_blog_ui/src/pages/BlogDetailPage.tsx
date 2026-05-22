@@ -5,6 +5,7 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 import CommentSection from "../components/CommentSection.tsx";
 import SimilarBlogs from "../components/SimilarBlogsSection.tsx";
 import {ConfirmDialog, ErrorDialog} from "../components/PopUp.tsx";
+import useAuthStore from "../store/authStore.ts";
 
 interface Category { categoryId: number; name: string; }
 interface City { cityId: number; name: string; }
@@ -42,6 +43,9 @@ const BlogDetailPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const token = useAuthStore(state => state.token);
+    const loggedInUserId = useAuthStore(state => state.userId);
+
     const [blog, setBlog] = React.useState<Blog | null>(null);
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [cities, setCities] = React.useState<City[]>([]);
@@ -55,6 +59,8 @@ const BlogDetailPage = () => {
     const [signInOpen, setSignInOpen] = React.useState(false);
 
     const [reactions, setReactions] = React.useState<{userId: number, reaction: string}[]>([]);
+    const [ownBlogOpen, setOwnBlogOpen] = React.useState(false);
+
 
     const fetchReactions = () => {
         axios.get(`${API_BASE}/blogs/${id}/react`)
@@ -70,11 +76,10 @@ const BlogDetailPage = () => {
         fetchReactions();
     }, [id, blog]);
 
-    const token = localStorage.getItem('token');
     const handleDeleteBlog = () => {
         axios.delete(`${API_BASE}/blogs/${id}`, { headers: { 'X-Authorization': token } })
             .then(() => {
-                navigate(`/users/${id}`);
+                navigate(`/users/${loggedInUserId}`);
             })
             .catch(() => {
                 setErrorOpen(true);
@@ -111,55 +116,63 @@ const BlogDetailPage = () => {
         axios.get(`${API_BASE}/blogs/cities`).then((res) => setCities(res.data));
     }, []);
 
-    // Early returns — before any derivations that depend on blog
+    React.useEffect(() => {
+        setImgError(false);
+        setAvatarError(false);
+    }, [id]);
+
     if (errorFlag) return <div>Blog not found.</div>;
     if (!blog) return <div>Loading...</div>;
 
-    // Safe to derive values here — blog is guaranteed non-null
     const cityName = cities.find((c) => c.cityId === blog.cityId)?.name ?? `City ${blog.cityId}`;
-    const blogImageUrl = `${API_BASE}/blogs/${blog.blogId}/image`;
     const creatorImageUrl = `${API_BASE}/users/${blog.creatorId}/image`;
     const creatorName = `${blog.creatorFirstName} ${blog.creatorLastName}`;
-    const loggedInUserId = localStorage.getItem("userId");
     const isAuthorised = Number(loggedInUserId) === Number(blog.creatorId);
     const canReact = Number(loggedInUserId) !== Number(blog.creatorId) && !!token;
+    const blogImageUrl = `${API_BASE}/blogs/${blog.blogId}/image`;
+
 
     return (
         <>
         <div className="blog-detail">
-            {!imgError ? (
-                <img
-                    src={blogImageUrl}
-                    alt={blog.title}
-                    className="blog-detail-image"
-                    onError={() => setImgError(true)}
-                />
-            ) : (
-                <div className="blog-detail-no-image">
-                    <Typography variant="body2">No image</Typography>
+            <div className="blog-detail-layout">
+                {!imgError ? (
+                    <img
+                        src={blogImageUrl}
+                        alt={blog.title}
+                        className="blog-detail-image"
+                        onError={() => setImgError(true)}
+                    />
+                ) : (
+                    <div className="blog-detail-no-image">
+                        <Typography variant="body2">No image</Typography>
+                    </div>
+                )}
+                <div className="blog-detail-content">
+                    <Typography variant="h6">{blog.title}</Typography>
+                    <Typography variant="body2">{blog.description}</Typography>
+
+                    <Link to={`/users/${blog.creatorId}`} className="blog-detail-creator-row">
+                        <Avatar
+                            src={avatarError ? undefined : creatorImageUrl}
+                            alt={creatorName}
+                            style={{ width: 28, height: 28 }}
+                            onError={() => setAvatarError(true)}
+                        >
+                            {creatorName[0]}
+                        </Avatar>
+                        <Typography variant="body2">{creatorName}</Typography>
+                    </Link>
+
+                    <Typography variant="body2">
+                        {cityName} · {formatDate(blog.creationDate)}
+                    </Typography>
                 </div>
-            )}
-
-            <Typography variant="h6">{blog.title}</Typography>
-            <Typography variant="body2">{blog.description}</Typography>
-
-            <Link to={`/users/${blog.creatorId}`} className="blog-detail-creator-row">
-                <Avatar
-                    src={avatarError ? undefined : creatorImageUrl}
-                    alt={creatorName}
-                    style={{ width: 28, height: 28 }}
-                    onError={() => setAvatarError(true)}
-                >
-                    {creatorName[0]}
-                </Avatar>
-                <Typography variant="body2">{creatorName}</Typography>
-            </Link>
-
-            <Typography variant="body2">
-                {cityName} · {formatDate(blog.creationDate)}
-            </Typography>
-
+            </div>
             <div className="blog-detail-chips">
+                {blog.series && (
+                    <Chip className="blog-detail-series" key="series" label={blog.series} size="small" />
+                )}
                 {blog.categoryIds.map((catId) => {
                     const name = categories.find((c) => c.categoryId === catId)?.name ?? `Cat ${catId}`;
                     return <Chip key={catId} label={name} size="small" />;
@@ -170,11 +183,15 @@ const BlogDetailPage = () => {
                 {REACTIONS.map(({ value, label }) => {
                     const count = reactions.filter(r => r.reaction === value).length;
                     return (
-                        <Button className="reaction-button"
+                        <Button
+                            className="reaction-button"
                             key={value}
                             variant={currentReaction === value ? 'contained' : 'outlined'}
-                            onClick={() => canReact ? handleReaction(value) : undefined}
-                            disabled={!canReact}
+                            onClick={() => {
+                                if (isAuthorised) setOwnBlogOpen(true);
+                                else if (canReact) handleReaction(value);
+                                else setSignInOpen(true);
+                            }}
                             style={{ minWidth: 64 }}
                         >
                             {label} {count > 0 && <span style={{ marginLeft: 4 }}>{count}</span>}
@@ -187,10 +204,19 @@ const BlogDetailPage = () => {
                 open={signInOpen}
                 title="Sign In"
                 message="User sign in is required to perform this task"
-                confirmLabel="Ok"
+                confirmLabel="Sign In"
                 onConfirm={() => { navigate(`/login`); setSignInOpen(false); }}
                 onCancel={() => setSignInOpen(false)}
             />
+
+            <ErrorDialog
+                open={ownBlogOpen}
+                title="Can't React"
+                message="You cannot react to your own blog."
+                confirmLabel="OK"
+                onConfirm={() => setOwnBlogOpen(false)}
+            />
+
 
             {isAuthorised && (
                 <>

@@ -163,10 +163,11 @@ const BlogsPage = () => {
                         >
                             <MenuItem value="CREATED_DESC">Newest first</MenuItem>
                             <MenuItem value="CREATED_ASC">Oldest first</MenuItem>
-                            <MenuItem value="TITLE_ASC">Title A–Z</MenuItem>
-                            <MenuItem value="TITLE_DESC">Title Z–A</MenuItem>
+                            <MenuItem value="ALPHABETICAL_ASC">Title A–Z</MenuItem>
+                            <MenuItem value="ALPHABETICAL_DESC">Title Z–A</MenuItem>
                             <MenuItem value="REACTIONS_ASC">Reactions (low → high)</MenuItem>
                             <MenuItem value="REACTIONS_DESC">Reactions (high → low)</MenuItem>
+
                         </Select>
                     </FormControl>
                 </div>
